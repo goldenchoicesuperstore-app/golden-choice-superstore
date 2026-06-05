@@ -1,0 +1,97 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // ==========================================
+    // HELPER FUNCTIONS
+    // ==========================================
+    
+    // Check if the user is authenticated with Firebase Auth
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Check if the authenticated user's UID matches the requested userId
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    // Check if the authenticated user has the 'admin' role in their user document
+    function isAdmin() {
+      return isAuthenticated() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // ==========================================
+    // CORE COLLECTIONS
+    // ==========================================
+
+    match /users/{userId} {
+      // Users can only read their own document. Admins can read all users.
+      allow read: if isOwner(userId) || isAdmin();
+      
+      // Users can write to their own document but CANNOT elevate their role to admin. Admins can write anything.
+      allow write: if isAdmin() || (
+        isOwner(userId) && 
+        (!request.resource.data.keys().hasAll(['role']) || request.resource.data.role == resource.data.role)
+      );
+    }
+    
+    match /products/{productId} {
+      // Products must be publicly readable for the storefront to work
+      allow read: if true;
+      // Only admins have permission to create, update, or delete products
+      allow write: if isAdmin();
+    }
+    
+    match /orders/{orderId} {
+      // Orders are private to the user who placed them. Admins can view all orders.
+      allow read: if isOwner(resource.data.userId) || isAdmin();
+      // Any authenticated user can create an order, provided the userId matches their UID
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+      // Only admins can update orders (e.g., changing orderStatus)
+      allow update: if isAdmin();
+      // Orders act as financial records and should never be deleted
+      allow delete: if false;
+    }
+
+    match /carts/{cartId} {
+      // Carts are completely isolated to their respective owners
+      allow read, write: if isOwner(cartId);
+    }
+
+    // ==========================================
+    // SUPPORT SYSTEM
+    // ==========================================
+
+    match /supportChats/{chatId} {
+      // Users can initiate a chat for themselves
+      allow create: if isAuthenticated() && request.auth.uid == request.resource.data.userId;
+      // Owners and admins can read the chat metadata
+      allow read: if isAuthenticated() && (request.auth.uid == resource.data.userId || isAdmin());
+      // Admins can update status/assignment. Owners can only update typing indicators and last message metadata.
+      allow update: if isAuthenticated() && (
+        isAdmin() || 
+        (request.auth.uid == resource.data.userId && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['lastMessage', 'lastMessageAt', 'unreadByAdmin', 'isTyping', 'status']))
+      );
+      
+      match /messages/{messageId} {
+        // Only the chat owner or an admin can send messages into this subcollection
+        allow create: if isAuthenticated() && (request.auth.uid == get(/databases/$(database)/documents/supportChats/$(chatId)).data.userId || isAdmin());
+        // Only the chat owner or an admin can read the messages
+        allow read: if isAuthenticated() && (request.auth.uid == get(/databases/$(database)/documents/supportChats/$(chatId)).data.userId || isAdmin());
+        // Messages are strictly immutable; they cannot be edited or deleted once sent
+        allow update, delete: if false; 
+      }
+    }
+    
+    // ==========================================
+    // NOTIFICATIONS
+    // ==========================================
+    
+    match /notifications/{notificationId} {
+      allow read, update: if isOwner(resource.data.userId);
+      allow write: if isAdmin();
+    }
+  }
+}
