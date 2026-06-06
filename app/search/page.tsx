@@ -89,7 +89,7 @@ function SearchContent() {
                 <li>Try different keywords</li>
               </ul>
             </div>
-            <Link href="/home" className="mt-8 inline-block px-6 py-3 bg-brand-500 text-white rounded-lg font-medium">
+            <Link href="/" className="mt-8 inline-block px-6 py-3 bg-brand-500 text-white rounded-lg font-medium">
               Go back home
             </Link>
           </div>

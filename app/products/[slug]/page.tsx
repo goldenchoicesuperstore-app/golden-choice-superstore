@@ -67,7 +67,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
     return (
       <div className="min-h-screen pt-[110px] flex flex-col items-center justify-center bg-gray-50">
         <h1 className="text-2xl font-bold text-gray-900 mb-4">Product Not Found</h1>
-        <Link href="/home" className="text-brand-500 font-bold hover:underline">Go back to Home</Link>
+        <Link href="/" className="text-brand-500 font-bold hover:underline">Go back to Home</Link>
       </div>
     );
   }
@@ -98,7 +98,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
     <div className="min-h-screen bg-gray-50 pb-28 pt-[110px] px-4 md:px-8">
       {/* Breadcrumb */}
       <nav className="text-sm text-gray-500 mb-6 flex items-center gap-2 flex-wrap">
-        <Link href="/home" className="hover:text-brand-500">Home</Link>
+        <Link href="/" className="hover:text-brand-500">Home</Link>
         <span>&gt;</span>
         <Link href={`/categories/${product.category}`} className="hover:text-brand-500 capitalize">{product.category.replace("-", " ")}</Link>
         <span>&gt;</span>

@@ -17,14 +17,14 @@ export default function BottomNav() {
   // If we shouldn't show BottomNav on home page, we return null here. 
   // However, usually mobile apps have a global bottom nav AND a horizontal category bar above it on the home page.
   // I will hide it on home page to perfectly match "replaces category bar on non-home pages" meaning they are mutually exclusive.
-  if (pathname === "/home") {
+  if (pathname === "/") {
     return null; 
   }
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 shadow-[0_-4px_15px_-1px_rgba(0,0,0,0.05)] h-[72px] flex items-center justify-around px-2 pb-safe">
-      <Link href="/home" className={`flex flex-col items-center justify-center p-2 rounded-xl transition-colors ${pathname === '/home' ? 'text-brand-500' : 'text-gray-500 hover:text-brand-500'}`}>
-        <svg xmlns="http://www.w3.org/2000/svg" fill={pathname === '/home' ? 'currentColor' : 'none'} viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 mb-1">
+      <Link href="/" className={`flex flex-col items-center justify-center p-2 rounded-xl transition-colors ${pathname === '/' ? 'text-brand-500' : 'text-gray-500 hover:text-brand-500'}`}>
+        <svg xmlns="http://www.w3.org/2000/svg" fill={pathname === '/' ? 'currentColor' : 'none'} viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 mb-1">
           <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
         </svg>
         <span className="text-[10px] font-bold text-center leading-tight">Home</span>

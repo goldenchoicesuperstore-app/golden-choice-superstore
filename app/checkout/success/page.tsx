@@ -38,7 +38,7 @@ function SuccessContent() {
         <Link href="/profile/orders" className="flex-1 bg-gray-900 text-white font-bold py-4 text-center rounded-xl hover:bg-gray-800 transition-colors shadow-sm text-lg">
           Track My Order
         </Link>
-        <Link href="/home" className="flex-1 bg-white text-brand-600 border-2 border-brand-500 font-bold py-4 text-center rounded-xl hover:bg-brand-50 transition-colors text-lg">
+        <Link href="/" className="flex-1 bg-white text-brand-600 border-2 border-brand-500 font-bold py-4 text-center rounded-xl hover:bg-brand-50 transition-colors text-lg">
           Continue Shopping
         </Link>
       </div>

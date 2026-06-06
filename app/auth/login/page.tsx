@@ -30,7 +30,7 @@ export default function LoginPage() {
     setErrorToast("");
     try {
       await authContext?.login(data.email, data.password);
-      router.push("/home");
+      router.push("/");
     } catch (error: any) {
       setErrorToast(error.message || "Failed to login");
     } finally {
@@ -42,7 +42,7 @@ export default function LoginPage() {
     setErrorToast("");
     try {
       await authContext?.loginWithGoogle();
-      router.push("/home");
+      router.push("/");
     } catch (error: any) {
       setErrorToast(error.message || "Failed to login with Google");
     }

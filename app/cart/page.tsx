@@ -17,7 +17,7 @@ export default function CartPage() {
         <div className="text-8xl mb-6 opacity-80">🛒</div>
         <h1 className="text-2xl font-bold text-gray-900 mb-2">Your cart is empty</h1>
         <p className="text-gray-500 mb-8 text-center max-w-sm">Looks like you haven't added anything to your cart yet. Discover our top products and deals today!</p>
-        <Link href="/home" className="bg-brand-500 text-white font-bold py-4 px-10 rounded-full hover:bg-brand-600 transition-colors shadow-brand hover:shadow-lg">
+        <Link href="/" className="bg-brand-500 text-white font-bold py-4 px-10 rounded-full hover:bg-brand-600 transition-colors shadow-brand hover:shadow-lg">
           Start Shopping
         </Link>
       </div>
@@ -75,7 +75,7 @@ export default function CartPage() {
           </div>
           
           <div className="mt-6 inline-block">
-            <Link href="/home" className="text-brand-600 font-bold hover:underline flex items-center gap-2">
+            <Link href="/" className="text-brand-600 font-bold hover:underline flex items-center gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
               </svg>

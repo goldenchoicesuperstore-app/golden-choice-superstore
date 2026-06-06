@@ -26,7 +26,7 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
       <div className="min-h-screen flex items-center justify-center bg-gray-50 pt-20">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-2">Category Not Found</h1>
-          <Link href="/home" className="text-brand-500 font-semibold hover:underline">Go back to Home</Link>
+          <Link href="/" className="text-brand-500 font-semibold hover:underline">Go back to Home</Link>
         </div>
       </div>
     );
@@ -36,7 +36,7 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
     <div className="min-h-screen bg-gray-50 pb-28 pt-[110px] px-4 md:px-8">
       {/* Breadcrumb */}
       <nav className="text-sm text-gray-500 mb-4 flex items-center gap-2">
-        <Link href="/home" className="hover:text-brand-500">Home</Link>
+        <Link href="/" className="hover:text-brand-500">Home</Link>
         <span>&gt;</span>
         <span className="text-gray-900 font-medium">{category.name}</span>
       </nav>

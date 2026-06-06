@@ -18,7 +18,7 @@ export default function ForbiddenPage() {
         </p>
         
         <Link 
-          href="/home" 
+          href="/" 
           className="block w-full bg-brand-500 text-white font-extrabold text-sm py-4 rounded-2xl shadow-brand hover:bg-brand-600 hover:shadow-lg transition-all uppercase tracking-widest"
         >
           Return to Store

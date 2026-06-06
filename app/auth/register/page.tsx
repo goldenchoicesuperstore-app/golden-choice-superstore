@@ -38,7 +38,7 @@ export default function RegisterPage() {
     setErrorToast("");
     try {
       await authContext?.signup(data.email, data.password, data.fullName, data.phone);
-      router.push("/home");
+      router.push("/");
     } catch (error: any) {
       setErrorToast(error.message || "Failed to register");
     } finally {
