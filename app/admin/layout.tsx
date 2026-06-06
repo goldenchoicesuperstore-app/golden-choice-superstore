@@ -9,18 +9,33 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const router = useRouter();
   const pathname = usePathname();
   const { user, loading, logout } = useAuth();
+  const [timeoutReached, setTimeoutReached] = useState(false);
 
   useEffect(() => {
+    console.log("Admin Layout Guard - Auth State:", { loading, user, role: user?.role });
     if (!loading) {
       if (!user) {
+        console.log("Admin Layout - No user found, redirecting to login");
         router.replace("/auth/login");
       } else if (user.role !== "admin") {
+        console.log("Admin Layout - User is not admin, redirecting to 403");
         router.replace("/403");
       }
     }
   }, [user, loading, router]);
 
-  if (loading || !user || user.role !== "admin") {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (loading || !user || user.role !== "admin") {
+        console.log("Admin Layout - 5 second timeout reached, redirecting to login");
+        setTimeoutReached(true);
+        router.replace("/auth/login");
+      }
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [loading, user, router]);
+
+  if (timeoutReached || loading || !user || user.role !== "admin") {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="w-16 h-16 border-4 border-[#FFD700] border-t-transparent rounded-full animate-spin"></div>

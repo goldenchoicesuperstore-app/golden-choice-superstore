@@ -86,6 +86,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const userDocRef = doc(db, "users", firebaseUser.uid);
     const userDoc = await getDoc(userDocRef);
     
+    console.log("AuthContext - loginWithGoogle fetched userDoc:", {
+      exists: userDoc.exists(),
+      data: userDoc.exists() ? userDoc.data() : null
+    });
+
     let userData: User;
     
     if (userDoc.exists()) {
