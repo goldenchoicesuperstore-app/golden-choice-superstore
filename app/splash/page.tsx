@@ -9,15 +9,7 @@ export default function SplashPage() {
 
   useEffect(() => {
     localStorage.setItem("visited", "true");
-
-    const timer = setTimeout(() => {
-      if (!clicked) {
-        router.push("/home");
-      }
-    }, 3000);
-
-    return () => clearTimeout(timer);
-  }, [router, clicked]);
+  }, []);
 
   const handleShopNow = () => {
     setClicked(true);

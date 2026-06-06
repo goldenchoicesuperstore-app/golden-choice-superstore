@@ -68,6 +68,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       } else {
         setUser(null);
       }
+      console.log("AuthContext - Firebase onAuthStateChanged resolved. Setting loading to false. User:", firebaseUser?.email || "null");
       setLoading(false);
     });
 

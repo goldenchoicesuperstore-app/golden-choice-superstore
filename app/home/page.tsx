@@ -27,8 +27,17 @@ export default function HomePage() {
   const { itemCount } = useCartStore();
   const authContext = useContext(AuthContext);
   const user = authContext?.user;
+  const authLoading = authContext?.loading;
   const pathname = usePathname();
   const router = useRouter();
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="w-16 h-16 border-4 border-[#F5C200] border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   const { products, loading } = useProducts();
 
