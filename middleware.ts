@@ -39,8 +39,11 @@ export async function middleware(request: NextRequest) {
     const uid = verifyData.users[0].localId;
 
     // 2. Fetch the user's role from Firestore securely
-    const firestoreRes = await fetch(`https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/users/${uid}`);
-    
+    const firestoreRes = await fetch(`https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/users/${uid}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
     if (!firestoreRes.ok) {
       // User document not found or Firestore error
       return NextResponse.redirect(new URL('/403', request.url));

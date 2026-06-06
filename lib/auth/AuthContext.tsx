@@ -41,20 +41,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const userDocRef = doc(db, "users", firebaseUser.uid);
         const userDoc = await getDoc(userDocRef);
         
+        let userData: User;
+        
         if (userDoc.exists()) {
-          setUser(userDoc.data() as User);
+          userData = userDoc.data() as User;
+          
+          if (firebaseUser.email === 'goldenchoicesuperstore@gmail.com' && userData.role !== 'admin') {
+            userData.role = 'admin';
+            await setDoc(userDocRef, { role: 'admin' }, { merge: true });
+          }
         } else {
-          setUser({
+          userData = {
             id: firebaseUser.uid,
             email: firebaseUser.email || '',
             displayName: firebaseUser.displayName || '',
             photoURL: firebaseUser.photoURL || '',
-            role: 'customer',
+            role: firebaseUser.email === 'goldenchoicesuperstore@gmail.com' ? 'admin' : 'customer',
             phone: firebaseUser.phoneNumber || '',
             createdAt: new Date().toISOString(),
             loyaltyPoints: 0
-          });
+          };
+          await setDoc(userDocRef, userData);
         }
+        
+        setUser(userData);
       } else {
         setUser(null);
       }
@@ -76,20 +86,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const userDocRef = doc(db, "users", firebaseUser.uid);
     const userDoc = await getDoc(userDocRef);
     
-    if (!userDoc.exists()) {
-      const newUser: User = {
+    let userData: User;
+    
+    if (userDoc.exists()) {
+      userData = userDoc.data() as User;
+      
+      if (firebaseUser.email === 'goldenchoicesuperstore@gmail.com' && userData.role !== 'admin') {
+        userData.role = 'admin';
+        await setDoc(userDocRef, { role: 'admin' }, { merge: true });
+      }
+    } else {
+      userData = {
         id: firebaseUser.uid,
         email: firebaseUser.email || '',
         displayName: firebaseUser.displayName || '',
         photoURL: firebaseUser.photoURL || '',
-        role: 'customer',
+        role: firebaseUser.email === 'goldenchoicesuperstore@gmail.com' ? 'admin' : 'customer',
         phone: firebaseUser.phoneNumber || '',
         createdAt: new Date().toISOString(),
         loyaltyPoints: 0
       };
-      await setDoc(userDocRef, newUser);
-      setUser(newUser);
+      await setDoc(userDocRef, userData);
     }
+    
+    setUser(userData);
   };
 
   const signup = async (email: string, password: string, displayName: string, phone: string) => {
