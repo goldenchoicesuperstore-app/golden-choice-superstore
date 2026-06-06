@@ -1,47 +1,34 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import { getAuth } from "firebase/auth";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
-import { app } from "../../lib/firebase/config";
 import Link from "next/link";
+import { useAuth } from "../../hooks/useAuth";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
-  const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
-  const [adminName, setAdminName] = useState("");
+  const { user, loading, logout } = useAuth();
 
   useEffect(() => {
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-
-    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+    if (!loading) {
       if (!user) {
         router.replace("/auth/login");
-        return;
+      } else if (user.role !== "admin") {
+        router.replace("/403");
       }
-      
-      try {
-        const userDoc = await getDoc(doc(db, "users", user.uid));
-        if (userDoc.exists() && userDoc.data().role === "admin") {
-          setIsAdmin(true);
-          setAdminName(userDoc.data().displayName || "Admin");
-        } else {
-          router.replace("/auth/login");
-        }
-      } catch (err) {
-        router.replace("/auth/login");
-      }
-    });
+    }
+  }, [user, loading, router]);
 
-    return () => unsubscribe();
-  }, [router]);
-
-  if (isAdmin === null) {
-    return <div className="min-h-screen flex items-center justify-center bg-gray-50"><div className="w-12 h-12 border-4 border-brand-500 border-t-transparent rounded-full animate-spin"></div></div>;
+  if (loading || !user || user.role !== "admin") {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="w-16 h-16 border-4 border-[#FFD700] border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
   }
+
+  const adminName = user.displayName || "Admin";
 
   const navItems = [
     { name: "Dashboard", href: "/admin", icon: "📊" },
@@ -94,7 +81,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <p className="text-[10px] font-black text-brand-500 uppercase tracking-widest mt-1">Super Admin</p>
             </div>
             <button 
-              onClick={() => { getAuth(app).signOut(); router.push('/auth/login'); }}
+              onClick={() => { logout(); router.push('/auth/login'); }}
               className="px-6 py-3 bg-red-50 text-red-600 hover:bg-red-100 hover:shadow-sm rounded-xl transition-all font-bold text-sm border border-red-100"
             >
               Log Out
