@@ -15,6 +15,9 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: "Golden Choice Superstore",
   description: "Nigeria's favourite online superstore",
+  other: {
+    "app-version": new Date().toISOString()
+  }
 };
 
 export default function RootLayout({
@@ -24,6 +27,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: `if ('serviceWorker' in navigator) { navigator.serviceWorker.getRegistrations().then(registrations => { registrations.forEach(registration => registration.unregister()); }); }` }} />
+      </head>
       <body className={`${plusJakartaSans.variable} font-sans antialiased`}>
         <AuthProvider>
           <CartProvider>
