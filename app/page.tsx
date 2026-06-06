@@ -31,9 +31,9 @@ export default function HomePage() {
 
   const { products, loading } = useProducts();
 
-  const featuredProducts = products.filter(p => p.isFeatured);
-  const dealsProducts = products.filter(p => p.compareAtPrice && p.compareAtPrice > p.price);
-  const newArrivals = [...products].sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
+  const featuredProducts = (products || []).filter(p => p.isFeatured);
+  const dealsProducts = (products || []).filter(p => p.compareAtPrice && p.compareAtPrice > p.price);
+  const newArrivals = [...(products || [])].sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
 
   // Hero carousel state
   const [currentSlide, setCurrentSlide] = useState(0);

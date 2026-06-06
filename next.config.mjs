@@ -26,6 +26,10 @@ const nextConfig = {
             key: 'Permissions-Policy',
             value: 'camera=(), microphone=(), geolocation=()', // Disables sensitive browser APIs globally
           },
+          {
+            key: 'Cross-Origin-Opener-Policy',
+            value: 'same-origin-allow-popups', // Allows Google sign-in popup
+          },
         ],
       },
       {
