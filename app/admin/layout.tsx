@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "../../hooks/useAuth";
+import { ToastProvider } from "../../components/ui/Toast";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -97,7 +98,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
         {/* Page Content */}
         <main className="flex-1 overflow-y-auto p-10">
-          {children}
+          <ToastProvider>
+            {children}
+          </ToastProvider>
         </main>
       </div>
       
