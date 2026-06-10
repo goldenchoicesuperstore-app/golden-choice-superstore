@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { getFirestore, collection, addDoc, doc, updateDoc, serverTimestamp } from "firebase/firestore";
 import { app } from "../../../../lib/firebase/config";
 import { useToast } from "../../../../components/ui/Toast";
-import Image from "next/image";
+import { Product } from "../../../../types";
 
 const categories = [
   { name: "Hair Products", slug: "hair-products" },
@@ -38,7 +38,7 @@ const productSchema = z.object({
 
 type ProductFormData = z.infer<typeof productSchema>;
 
-export default function ProductForm({ initialData, productId }: { initialData?: any, productId?: string }) {
+export default function ProductForm({ initialData, productId }: { initialData?: Partial<Product> | null, productId?: string }) {
   const router = useRouter();
   const { showToast } = useToast();
   const [saving, setSaving] = useState(false);

@@ -6,11 +6,12 @@ import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { app } from "../../../../lib/firebase/config";
 import ProductForm from "../components/ProductForm";
 import { useToast } from "../../../../components/ui/Toast";
+import { Product } from "../../../../types";
 
 export default function EditProductPage() {
   const params = useParams();
   const productId = params.id as string;
-  const [initialData, setInitialData] = useState<any>(null);
+  const [initialData, setInitialData] = useState<Partial<Product> | null>(null);
   const [loading, setLoading] = useState(true);
   const { showToast } = useToast();
 

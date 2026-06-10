@@ -5,9 +5,10 @@ import Link from "next/link";
 import { getFirestore, collection, onSnapshot, deleteDoc, doc, query, orderBy } from "firebase/firestore";
 import { app } from "../../../lib/firebase/config";
 import { useToast } from "../../../components/ui/Toast";
+import { Product } from "../../../types";
 
 export default function AdminProductsPage() {
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const { showToast } = useToast();
 
@@ -18,7 +19,7 @@ export default function AdminProductsPage() {
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const prods: any[] = [];
       snapshot.forEach((doc) => {
-        prods.push({ id: doc.id, ...doc.data() });
+        prods.push({ id: doc.id, ...doc.data() } as Product);
       });
       setProducts(prods);
       setLoading(false);
@@ -92,7 +93,7 @@ export default function AdminProductsPage() {
                       </div>
                     </td>
                     <td className="p-5 font-bold text-gray-900">{product.name}</td>
-                    <td className="p-5 font-medium text-gray-500 capitalize">{product.category.replace('-', ' ')}</td>
+                    <td className="p-5 font-medium text-gray-500 capitalize">{product.category?.replace('-', ' ') || 'Uncategorized'}</td>
                     <td className="p-5 font-black text-brand-600 text-right">₦{product.price.toLocaleString()}</td>
                     <td className="p-5 text-center font-bold text-gray-700">{product.stockQuantity}</td>
                     <td className="p-5 text-center">
