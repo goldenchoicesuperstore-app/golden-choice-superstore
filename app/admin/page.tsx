@@ -27,25 +27,61 @@ export default function AdminDashboard() {
     });
 
     const fetchStats = async () => {
-      const productsSnap = await getDocs(collection(db, "products"));
-      const customersSnap = await getDocs(query(collection(db, "users"), where("role", "==", "customer")));
-      
-      const mockChart = Array.from({length: 7}).map((_, i) => {
-        const d = new Date();
-        d.setDate(d.getDate() - (6 - i));
-        return {
-          name: d.toLocaleDateString('en-US', { weekday: 'short' }),
-          revenue: Math.floor(Math.random() * 500000) + 50000
-        };
-      });
-      setChartData(mockChart);
+      try {
+        const productsSnap = await getDocs(collection(db, "products"));
+        const customersSnap = await getDocs(query(collection(db, "users"), where("role", "==", "customer")));
+        
+        const startOfToday = new Date();
+        startOfToday.setHours(0, 0, 0, 0);
+        const ordersTodaySnap = await getDocs(query(collection(db, "orders"), where("createdAt", ">=", startOfToday)));
+        
+        const paidOrdersSnap = await getDocs(query(collection(db, "orders"), where("paymentStatus", "==", "paid")));
+        
+        let totalRevenue = 0;
+        paidOrdersSnap.forEach(doc => {
+          totalRevenue += doc.data().total || 0;
+        });
 
-      setStats({
-        revenue: 12540000,
-        ordersToday: 42,
-        totalCustomers: customersSnap.size,
-        totalProducts: productsSnap.size
-      });
+        const last7Days = Array.from({length: 7}).map((_, i) => {
+          const d = new Date();
+          d.setHours(0, 0, 0, 0);
+          d.setDate(d.getDate() - (6 - i));
+          return {
+            dateStr: d.toDateString(),
+            name: d.toLocaleDateString('en-US', { weekday: 'short' }),
+            revenue: 0
+          };
+        });
+
+        paidOrdersSnap.forEach(doc => {
+          const data = doc.data();
+          if (data.createdAt) {
+            const orderDate = typeof data.createdAt.toDate === 'function' ? data.createdAt.toDate() : new Date(data.createdAt);
+            const dateStr = orderDate.toDateString();
+            const dayObj = last7Days.find(d => d.dateStr === dateStr);
+            if (dayObj) {
+              dayObj.revenue += (data.total || 0);
+            }
+          }
+        });
+
+        setChartData(last7Days.map(d => ({ name: d.name, revenue: d.revenue })));
+
+        setStats({
+          revenue: totalRevenue,
+          ordersToday: ordersTodaySnap.size,
+          totalCustomers: customersSnap.size,
+          totalProducts: productsSnap.size
+        });
+      } catch (error) {
+        console.error("Failed to fetch dashboard stats", error);
+        setStats({ revenue: 0, ordersToday: 0, totalCustomers: 0, totalProducts: 0 });
+        setChartData(Array.from({length: 7}).map((_, i) => {
+          const d = new Date();
+          d.setDate(d.getDate() - (6 - i));
+          return { name: d.toLocaleDateString('en-US', { weekday: 'short' }), revenue: 0 };
+        }));
+      }
     };
     fetchStats();
 
