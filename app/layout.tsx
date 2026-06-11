@@ -6,6 +6,7 @@ import { CartProvider } from "../lib/context/CartContext";
 import { ToastProvider } from "../lib/context/ToastProvider";
 import BottomNav from "../components/layout/BottomNav";
 import ChatWidget from "../components/chat/ChatWidget";
+import SplashScreen from "./components/SplashScreen";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -34,6 +35,7 @@ export default function RootLayout({
         <AuthProvider>
           <CartProvider>
             <ToastProvider>
+              <SplashScreen />
               {children}
               <ChatWidget />
               <BottomNav />

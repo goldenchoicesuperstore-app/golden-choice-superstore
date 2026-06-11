@@ -22,7 +22,7 @@ export default function Button({
   const baseStyles = "inline-flex items-center justify-center font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none";
   
   const variants = {
-    primary: "bg-brand-500 text-white hover:bg-brand-600 focus:ring-brand-500",
+    primary: "bg-gradient-to-r from-brand-500 to-[#C9980A] text-white hover:shadow-brand hover:scale-[1.02] focus:ring-brand-500 border-none transition-all duration-300",
     secondary: "border-2 border-gray-200 text-gray-900 hover:border-gray-300 hover:bg-gray-50 focus:ring-gray-200",
     ghost: "text-gray-700 hover:bg-gray-100 focus:ring-gray-200",
     danger: "bg-red-600 text-white hover:bg-red-700 focus:ring-red-600"

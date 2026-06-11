@@ -93,7 +93,7 @@ export default function HomePage() {
   return (
     <div className="bg-white min-h-screen pb-28">
       {/* Top Header */}
-      <header className="fixed top-0 left-0 right-0 bg-white z-50 shadow-sm px-4 py-3 flex flex-col gap-3">
+      <header className="fixed top-0 left-0 right-0 bg-white z-50 shadow-sm px-4 py-3 flex flex-col gap-3 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[3px] after:bg-gradient-to-r after:from-[#F5C200] after:to-[#C9980A]">
         <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center gap-1">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8 text-brand-500">
@@ -154,7 +154,7 @@ export default function HomePage() {
             >
               <h2 className="text-3xl font-extrabold mb-2">{slide.title}</h2>
               <p className="mb-4 opacity-90">{slide.sub}</p>
-              <button className={`w-fit px-6 py-2 font-bold rounded-full text-sm shadow-sm ${slide.bg === 'bg-white' ? 'bg-brand-500 text-white' : 'bg-white text-gray-900'}`}>
+              <button className={`w-fit px-6 py-2 font-bold rounded-full text-sm shadow-sm transition-all duration-300 hover:shadow-brand hover:scale-105 ${slide.bg === 'bg-white' ? 'bg-gradient-to-r from-brand-500 to-[#C9980A] text-white' : 'bg-white text-gray-900'}`}>
                 Shop Now
               </button>
             </div>
@@ -240,7 +240,7 @@ export default function HomePage() {
       </div>
 
       {/* Bottom Category Bar */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 shadow-[0_-4px_15px_-1px_rgba(0,0,0,0.05)] h-20 flex items-center">
+      <nav className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-[#F5C200] to-[#C9980A] z-50 shadow-[0_-4px_20px_rgba(201,152,10,0.15)] h-[84px] flex items-center">
         <div className="flex overflow-x-auto hide-scrollbar px-2 gap-3 items-center w-full">
           {categories.map((cat) => {
             const isActive = pathname === `/categories/${cat.slug}`;
@@ -248,10 +248,12 @@ export default function HomePage() {
               <Link 
                 key={cat.slug} 
                 href={`/categories/${cat.slug}`}
-                className={`flex flex-col items-center justify-center min-w-[72px] h-[64px] p-2 rounded-xl transition-colors ${isActive ? 'bg-brand-50 text-brand-600' : 'text-gray-500 hover:bg-gray-50 hover:text-brand-500'}`}
+                className="flex flex-col items-center justify-center min-w-[72px] h-[68px] p-2 rounded-xl transition-all duration-300 ease-in-out hover:scale-105 active:scale-95 text-white group"
               >
-                <span className="text-2xl mb-1">{cat.icon}</span>
-                <span className="text-[10px] font-semibold text-center leading-tight whitespace-nowrap">{cat.name}</span>
+                <div className={`flex items-center justify-center w-12 h-12 rounded-full transition-all duration-300 mb-1 drop-shadow-sm ${isActive ? 'bg-white border-2 border-[#F5C200] text-[#C9980A]' : 'bg-white/20 group-hover:bg-white/30'}`}>
+                  <span className="text-2xl">{cat.icon}</span>
+                </div>
+                <span className={`text-[10px] font-bold text-center leading-tight whitespace-nowrap ${isActive ? 'opacity-100' : 'opacity-90'}`}>{cat.name}</span>
               </Link>
             );
           })}

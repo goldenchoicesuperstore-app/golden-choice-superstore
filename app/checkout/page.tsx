@@ -164,7 +164,7 @@ export default function CheckoutPage() {
               </div>
             </div>
             <div className="mt-8 flex justify-end">
-              <button onClick={handleNextStep} className="bg-brand-500 text-white font-bold py-4 px-10 rounded-xl hover:bg-brand-600 transition-all shadow-brand text-lg">Continue to Payment</button>
+              <button onClick={handleNextStep} className="bg-gradient-to-r from-brand-500 to-[#C9980A] text-white font-bold py-4 px-10 rounded-xl hover:shadow-brand hover:scale-[1.02] transition-all text-lg border-none">Continue to Payment</button>
             </div>
           </div>
         )}
@@ -216,7 +216,7 @@ export default function CheckoutPage() {
 
             <div className="flex justify-between items-center pt-4">
               <button onClick={() => setStep(1)} className="text-gray-500 font-bold hover:text-gray-900 px-4 py-2">← Back to Delivery</button>
-              <button onClick={handleNextStep} className="bg-brand-500 text-white font-bold py-4 px-10 rounded-xl hover:bg-brand-600 transition-all shadow-brand text-lg">Review Order</button>
+              <button onClick={handleNextStep} className="bg-gradient-to-r from-brand-500 to-[#C9980A] text-white font-bold py-4 px-10 rounded-xl hover:shadow-brand hover:scale-[1.02] transition-all text-lg border-none">Review Order</button>
             </div>
           </div>
         )}
@@ -279,7 +279,7 @@ export default function CheckoutPage() {
 
             <div className="flex justify-between items-center">
               <button onClick={() => setStep(2)} disabled={isProcessing} className="text-gray-500 font-bold hover:text-gray-900 px-4 py-2 disabled:opacity-50">← Back</button>
-              <button onClick={handlePlaceOrder} disabled={isProcessing} className="bg-gray-900 text-white font-bold py-4 px-12 rounded-xl hover:bg-gray-800 transition-all text-lg flex items-center gap-3 disabled:opacity-75 disabled:cursor-not-allowed">
+              <button onClick={handlePlaceOrder} disabled={isProcessing} className="bg-gradient-to-r from-brand-500 to-[#C9980A] text-white font-bold py-4 px-12 rounded-xl hover:shadow-brand hover:scale-[1.02] transition-all text-lg flex items-center gap-3 disabled:opacity-75 disabled:cursor-not-allowed border-none">
                 {isProcessing && <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>}
                 {isProcessing ? 'Processing Securely...' : 'Place Order Now'}
               </button>

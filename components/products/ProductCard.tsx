@@ -76,7 +76,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
           <button 
             onClick={handleAddToCart}
-            className="w-full bg-brand-50 text-brand-700 hover:bg-brand-500 hover:text-white border border-brand-200 font-semibold text-sm py-2 rounded-lg transition-colors duration-200 flex items-center justify-center gap-1"
+            className="w-full bg-gradient-to-r from-brand-500 to-[#C9980A] text-white hover:shadow-brand hover:scale-[1.02] border-none font-semibold text-sm py-2 rounded-lg transition-all duration-300 flex items-center justify-center gap-1"
           >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />

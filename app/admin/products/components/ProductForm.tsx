@@ -246,7 +246,7 @@ export default function ProductForm({ initialData, productId }: { initialData?: 
       </div>
 
       <div className="pt-6 flex justify-end border-t border-gray-100">
-        <button type="submit" disabled={saving} className="bg-[#FFD700] text-gray-900 font-extrabold text-xl py-5 px-16 rounded-2xl shadow-lg hover:bg-[#F4CE00] hover:shadow-xl transition-all disabled:opacity-50 disabled:shadow-none flex items-center gap-3">
+        <button type="submit" disabled={saving} className="bg-gradient-to-r from-brand-500 to-[#C9980A] text-white font-extrabold text-xl py-5 px-16 rounded-2xl hover:shadow-brand hover:scale-[1.02] transition-all disabled:opacity-50 disabled:shadow-none border-none flex items-center gap-3">
           {saving && <div className="w-5 h-5 border-2 border-gray-900 border-t-transparent rounded-full animate-spin"></div>}
           {saving ? "Saving..." : (productId ? "Update Product" : "Save Product")}
         </button>

@@ -78,7 +78,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Topbar */}
-        <header className="bg-white h-24 border-b border-gray-200 flex items-center justify-between px-10 shrink-0 shadow-sm z-10">
+        <header className="relative bg-white h-24 border-b border-gray-200 flex items-center justify-between px-10 shrink-0 shadow-sm z-10 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[3px] after:bg-gradient-to-r after:from-[#F5C200] after:to-[#C9980A]">
           <h2 className="text-3xl font-extrabold text-gray-900 capitalize hidden sm:block">
             {pathname === '/admin' ? 'Dashboard' : pathname.split('/').pop()?.replace('-', ' ')}
           </h2>

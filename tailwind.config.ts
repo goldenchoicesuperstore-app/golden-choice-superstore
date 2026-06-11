@@ -6,6 +6,16 @@ const config = {
   ],
   theme: {
     extend: {
+      keyframes: {
+        'splash-fade': {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        'splash-scale': {
+          '0%': { transform: 'scale(0.95)' },
+          '100%': { transform: 'scale(1)' },
+        }
+      },
       colors: {
         brand: {
           50: '#fefce8',
