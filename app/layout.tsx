@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "../lib/auth/AuthContext";
 import { CartProvider } from "../lib/context/CartContext";
@@ -7,11 +6,6 @@ import { ToastProvider } from "../lib/context/ToastProvider";
 import BottomNav from "../components/layout/BottomNav";
 import ChatWidget from "../components/chat/ChatWidget";
 import SplashScreen from "./components/SplashScreen";
-
-const plusJakartaSans = Plus_Jakarta_Sans({
-  subsets: ["latin"],
-  variable: "--font-plus-jakarta",
-});
 
 export const metadata: Metadata = {
   title: "Golden Choice Superstore",
@@ -29,9 +23,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet" />
         <script dangerouslySetInnerHTML={{ __html: `if ('serviceWorker' in navigator) { navigator.serviceWorker.getRegistrations().then(registrations => { registrations.forEach(registration => registration.unregister()); }); }` }} />
       </head>
-      <body className={`${plusJakartaSans.variable} font-sans antialiased`}>
+      <body className="font-sans antialiased">
         <AuthProvider>
           <CartProvider>
             <ToastProvider>
