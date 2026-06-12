@@ -2,18 +2,49 @@
 
 import { use, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import ProductCard from "../../../components/products/ProductCard";
-import { getCategoryBySlug } from "../../../lib/data/categories";
+import { getCategoryBySlug, CATEGORIES } from "../../../lib/data/categories";
 import { useProducts } from "../../../hooks/useProducts";
 
 export default function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = use(params);
   const slug = resolvedParams.slug;
   const category = getCategoryBySlug(slug);
+  const router = useRouter();
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [sortBy, setSortBy] = useState<'newest' | 'price-asc' | 'price-desc' | 'best-selling'>('newest');
   const [inStockOnly, setInStockOnly] = useState(false);
+
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const minSwipeDistance = 50;
+
+  const onTouchStartEvent = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMoveEvent = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEndEvent = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    const currentIndex = CATEGORIES.findIndex(c => c.slug === slug);
+    if (currentIndex === -1) return;
+
+    if (isLeftSwipe && currentIndex < CATEGORIES.length - 1) {
+      router.push(`/categories/${CATEGORIES[currentIndex + 1].slug}`);
+    } else if (isRightSwipe && currentIndex > 0) {
+      router.push(`/categories/${CATEGORIES[currentIndex - 1].slug}`);
+    }
+  };
 
   const { products, loading, loadingMore, error, hasMore, loadMore } = useProducts({
     categorySlug: slug,
@@ -33,7 +64,12 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-28 pt-[110px] px-4 md:px-8">
+    <div 
+      className="min-h-screen bg-gray-50 pb-36 pt-[110px] px-4 md:px-8"
+      onTouchStart={onTouchStartEvent}
+      onTouchMove={onTouchMoveEvent}
+      onTouchEnd={onTouchEndEvent}
+    >
       {/* Breadcrumb */}
       <nav className="text-sm text-gray-500 mb-4 flex items-center gap-2">
         <Link href="/" className="hover:text-brand-500">Home</Link>

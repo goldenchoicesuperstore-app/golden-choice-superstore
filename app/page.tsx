@@ -10,17 +10,6 @@ import ProductCard from "../components/products/ProductCard";
 import Skeleton from "../components/ui/Skeleton";
 import { useProducts } from "../hooks/useProducts";
 
-const categories = [
-  { name: "Hair Products", slug: "hair-products", icon: "✂️" },
-  { name: "Electronics", slug: "electronics", icon: "⚡" },
-  { name: "Baby Products", slug: "baby-products", icon: "👶" },
-  { name: "Insecticides", slug: "insecticides", icon: "🛡️" },
-  { name: "Perfumes", slug: "perfumes", icon: "✨" },
-  { name: "Phones", slug: "phones", icon: "📱" },
-  { name: "Laptops", slug: "laptops", icon: "💻" },
-  { name: "Beddings", slug: "beddings", icon: "🛏️" },
-  { name: "Drinks", slug: "drinks", icon: "☕" },
-];
 
 export default function HomePage() {
   const { itemCount } = useCartStore();
@@ -39,7 +28,7 @@ export default function HomePage() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const slides = [
     { bg: "bg-brand-500", text: "text-white", title: "Fresh Deals Every Day", sub: "Up to 50% off on groceries" },
-    { bg: "bg-gray-900", text: "text-white", title: "Tech Week is Here", sub: "Upgrade your gadgets today" },
+    { bg: "bg-gradient-to-r from-[#FFE566] via-[#F5C200] to-[#C9980A] animate-shimmer", text: "text-gray-900", title: "Upgrade Your Gadgets Today", sub: "" },
     { bg: "bg-white", text: "text-gray-900", title: "Baby Essentials", sub: "Everything your little one needs" },
   ];
 
@@ -91,20 +80,17 @@ export default function HomePage() {
   };
 
   return (
-    <div className="bg-white min-h-screen pb-28">
+    <div className="bg-white min-h-screen pb-36">
       {/* Top Header */}
       <header className="fixed top-0 left-0 right-0 bg-white z-50 shadow-sm px-4 py-3 flex flex-col gap-3 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[3px] after:bg-gradient-to-r after:from-[#F5C200] after:to-[#C9980A]">
         <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center gap-1">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8 text-brand-500">
-              <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z" clipRule="evenodd" />
-            </svg>
-            <span className="font-extrabold text-xl text-gray-900 tracking-tight">Golden Choice</span>
+            <span className="font-extrabold text-xl text-[#F5C200] tracking-tight">Golden Choice</span>
           </Link>
           
           <div className="flex items-center gap-4">
             {/* User Avatar */}
-            <Link href={user ? "/profile" : "/login"} className="text-gray-600 hover:text-brand-500">
+            <Link href={user ? "/account" : "/auth/login"} className="text-gray-600 hover:text-brand-500">
               {user?.photoURL ? (
                 <Image src={user.photoURL} alt="Avatar" width={32} height={32} className="w-8 h-8 rounded-full border border-brand-200" unoptimized />
               ) : (
@@ -154,7 +140,7 @@ export default function HomePage() {
             >
               <h2 className="text-3xl font-extrabold mb-2">{slide.title}</h2>
               <p className="mb-4 opacity-90">{slide.sub}</p>
-              <button className={`w-fit px-6 py-2 font-bold rounded-full text-sm shadow-sm transition-all duration-300 hover:shadow-brand hover:scale-105 ${slide.bg === 'bg-white' ? 'bg-gradient-to-r from-brand-500 to-[#C9980A] text-white' : 'bg-white text-gray-900'}`}>
+              <button className={`w-fit px-6 py-2 font-bold rounded-full text-sm shadow-sm transition-all duration-300 hover:shadow-brand hover:scale-105 ${slide.bg === 'bg-white' ? 'bg-gradient-to-r from-brand-500 to-[#C9980A] text-white' : slide.bg.includes('animate-shimmer') ? 'bg-transparent border-2 border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white' : 'bg-white text-gray-900'}`}>
                 Shop Now
               </button>
             </div>
@@ -239,26 +225,7 @@ export default function HomePage() {
         </section>
       </div>
 
-      {/* Bottom Category Bar */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-[#F5C200] to-[#C9980A] z-50 shadow-[0_-4px_20px_rgba(201,152,10,0.15)] h-[84px] flex items-center">
-        <div className="flex overflow-x-auto hide-scrollbar px-2 gap-3 items-center w-full">
-          {categories.map((cat) => {
-            const isActive = pathname === `/categories/${cat.slug}`;
-            return (
-              <Link 
-                key={cat.slug} 
-                href={`/categories/${cat.slug}`}
-                className="flex flex-col items-center justify-center min-w-[72px] h-[68px] p-2 rounded-xl transition-all duration-300 ease-in-out hover:scale-105 active:scale-95 text-white group"
-              >
-                <div className={`flex items-center justify-center w-12 h-12 rounded-full transition-all duration-300 mb-1 drop-shadow-sm ${isActive ? 'bg-white border-2 border-[#F5C200] text-[#C9980A]' : 'bg-white/20 group-hover:bg-white/30'}`}>
-                  <span className="text-2xl">{cat.icon}</span>
-                </div>
-                <span className={`text-[10px] font-bold text-center leading-tight whitespace-nowrap ${isActive ? 'opacity-100' : 'opacity-90'}`}>{cat.name}</span>
-              </Link>
-            );
-          })}
-        </div>
-      </nav>
+
 
       <style dangerouslySetInnerHTML={{__html: `
         .hide-scrollbar::-webkit-scrollbar {

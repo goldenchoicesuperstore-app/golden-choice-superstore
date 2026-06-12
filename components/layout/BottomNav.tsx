@@ -2,65 +2,49 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useCartStore } from "../../store/cartStore";
+import { CATEGORIES } from "../../lib/data/categories";
 
 export default function BottomNav() {
   const pathname = usePathname();
-  const { itemCount } = useCartStore();
 
   const hiddenRoutes = ["/auth/login", "/auth/register", "/splash", "/checkout", "/checkout/success"];
   if (hiddenRoutes.some(route => pathname.startsWith(route))) {
     return null;
   }
 
-  // The prompt says: "This replaces the category bar on non-home pages — the category bar only shows on the home page."
-  // If we shouldn't show BottomNav on home page, we return null here. 
-  // However, usually mobile apps have a global bottom nav AND a horizontal category bar above it on the home page.
-  // I will hide it on home page to perfectly match "replaces category bar on non-home pages" meaning they are mutually exclusive.
-  if (pathname === "/") {
-    return null; 
-  }
-
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white z-50 shadow-[0_-8px_20px_-5px_rgba(0,0,0,0.08)] h-[84px] flex items-center justify-around px-2 pb-safe before:absolute before:top-0 before:left-0 before:right-0 before:h-[2px] before:bg-gradient-to-r before:from-[#F5C200] before:to-[#C9980A]">
-      <Link href="/" className={`relative flex flex-col items-center justify-center w-full h-full transition-all duration-300 ease-in-out hover:scale-105 active:scale-95 ${pathname === '/' ? 'text-[#F5C200]' : 'text-gray-400 hover:text-[#F5C200]'}`}>
-        <div className={`absolute top-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-gradient-to-r from-[#F5C200] to-[#C9980A] rounded-full transition-all duration-300 ${pathname === '/' ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}`} />
-        <svg xmlns="http://www.w3.org/2000/svg" fill={pathname === '/' ? 'currentColor' : 'none'} viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 mb-1 mt-2">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
-        </svg>
-        <span className="text-[10px] font-bold text-center leading-tight">Home</span>
-      </Link>
-      
-      <Link href="/categories" className={`relative flex flex-col items-center justify-center w-full h-full transition-all duration-300 ease-in-out hover:scale-105 active:scale-95 ${pathname.startsWith('/categories') ? 'text-[#F5C200]' : 'text-gray-400 hover:text-[#F5C200]'}`}>
-        <div className={`absolute top-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-gradient-to-r from-[#F5C200] to-[#C9980A] rounded-full transition-all duration-300 ${pathname.startsWith('/categories') ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}`} />
-        <svg xmlns="http://www.w3.org/2000/svg" fill={pathname.startsWith('/categories') ? 'currentColor' : 'none'} viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 mb-1 mt-2">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
-        </svg>
-        <span className="text-[10px] font-bold text-center leading-tight">Categories</span>
-      </Link>
+    <nav className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-[#F5C200] to-[#C9980A] z-50 shadow-[0_-4px_20px_rgba(201,152,10,0.15)] h-[84px] flex items-center pb-safe">
+      <div className="flex overflow-x-auto hide-scrollbar px-2 gap-3 items-center w-full">
+        {/* Home Link */}
+        <Link 
+          href="/"
+          className="flex flex-col items-center justify-center min-w-[72px] h-[68px] p-2 rounded-xl transition-all duration-300 ease-in-out hover:scale-105 active:scale-95 text-white group shrink-0"
+        >
+          <div className={`flex items-center justify-center w-12 h-12 rounded-full transition-all duration-300 mb-1 drop-shadow-sm ${pathname === '/' ? 'bg-white border-2 border-[#F5C200] text-[#C9980A]' : 'bg-white/20 group-hover:bg-white/30'}`}>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+            </svg>
+          </div>
+          <span className={`text-[10px] font-bold text-center leading-tight whitespace-nowrap ${pathname === '/' ? 'opacity-100' : 'opacity-90'}`}>Home</span>
+        </Link>
 
-      <Link href="/cart" className={`relative flex flex-col items-center justify-center w-full h-full transition-all duration-300 ease-in-out hover:scale-105 active:scale-95 ${pathname === '/cart' ? 'text-[#F5C200]' : 'text-gray-400 hover:text-[#F5C200]'}`}>
-        <div className={`absolute top-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-gradient-to-r from-[#F5C200] to-[#C9980A] rounded-full transition-all duration-300 ${pathname === '/cart' ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}`} />
-        <div className="relative mt-2">
-          <svg xmlns="http://www.w3.org/2000/svg" fill={pathname === '/cart' ? 'currentColor' : 'none'} viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 mb-1">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-          </svg>
-          {itemCount > 0 && (
-            <span className="absolute -top-1.5 -right-2 bg-gradient-to-r from-[#F5C200] to-[#C9980A] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full shadow-sm">
-              {itemCount}
-            </span>
-          )}
-        </div>
-        <span className="text-[10px] font-bold text-center leading-tight">Cart</span>
-      </Link>
-
-      <Link href="/account" className={`relative flex flex-col items-center justify-center w-full h-full transition-all duration-300 ease-in-out hover:scale-105 active:scale-95 ${pathname.startsWith('/account') ? 'text-[#F5C200]' : 'text-gray-400 hover:text-[#F5C200]'}`}>
-        <div className={`absolute top-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-gradient-to-r from-[#F5C200] to-[#C9980A] rounded-full transition-all duration-300 ${pathname.startsWith('/account') ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}`} />
-        <svg xmlns="http://www.w3.org/2000/svg" fill={pathname.startsWith('/account') ? 'currentColor' : 'none'} viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 mb-1 mt-2">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-        </svg>
-        <span className="text-[10px] font-bold text-center leading-tight">Account</span>
-      </Link>
+        {/* Category Links */}
+        {CATEGORIES.map((cat) => {
+          const isActive = pathname === `/categories/${cat.slug}`;
+          return (
+            <Link 
+              key={cat.slug} 
+              href={`/categories/${cat.slug}`}
+              className="flex flex-col items-center justify-center min-w-[72px] h-[68px] p-2 rounded-xl transition-all duration-300 ease-in-out hover:scale-105 active:scale-95 text-white group shrink-0"
+            >
+              <div className={`flex items-center justify-center w-12 h-12 rounded-full transition-all duration-300 mb-1 drop-shadow-sm ${isActive ? 'bg-white border-2 border-[#F5C200] text-[#C9980A]' : 'bg-white/20 group-hover:bg-white/30'}`}>
+                <span className="text-2xl">{cat.icon}</span>
+              </div>
+              <span className={`text-[10px] font-bold text-center leading-tight whitespace-nowrap ${isActive ? 'opacity-100' : 'opacity-90'}`}>{cat.name}</span>
+            </Link>
+          );
+        })}
+      </div>
     </nav>
   );
 }
