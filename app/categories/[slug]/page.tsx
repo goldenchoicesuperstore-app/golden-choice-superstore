@@ -70,20 +70,24 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
       onTouchMove={onTouchMoveEvent}
       onTouchEnd={onTouchEndEvent}
     >
-      {/* Breadcrumb */}
-      <nav className="text-sm text-gray-500 mb-4 flex items-center gap-2">
-        <Link href="/" className="hover:text-brand-500">Home</Link>
-        <span>&gt;</span>
-        <span className="text-gray-900 font-medium">{category.name}</span>
-      </nav>
+      <div className="-mx-4 md:-mx-8 px-4 md:px-8 py-8 mb-6 bg-gradient-to-r from-[#FFE566] via-[#F5C200] to-[#C9980A] animate-shimmer shadow-sm relative overflow-hidden">
+        <div className="relative z-10">
+          {/* Breadcrumb */}
+          <nav className="text-sm text-gray-900/70 mb-4 flex items-center gap-2 font-medium">
+            <Link href="/" className="hover:text-gray-900 transition-colors">Home</Link>
+            <span>&gt;</span>
+            <span className="text-gray-900 font-bold">{category.name}</span>
+          </nav>
 
-      {/* Header */}
-      <div className="mb-6">
-        <div className="flex items-center gap-3 mb-2">
-          <span className="text-4xl">{category.icon}</span>
-          <h1 className="text-3xl font-extrabold text-gray-900">{category.name}</h1>
+          {/* Header */}
+          <div>
+            <div className="flex items-center gap-3 mb-2">
+              <span className="text-4xl drop-shadow-sm">{category.icon}</span>
+              <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">{category.name}</h1>
+            </div>
+            <p className="text-gray-900/90 font-medium max-w-2xl">{category.description}</p>
+          </div>
         </div>
-        <p className="text-gray-600">{category.description}</p>
       </div>
 
       <div className="flex flex-col lg:flex-row gap-6">
