@@ -65,7 +65,7 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
 
   return (
     <div 
-      className="min-h-screen bg-gray-50 pb-36 pt-[110px] px-4 md:px-8"
+      className="min-h-screen bg-gray-50 pb-36 px-4 md:px-8"
       onTouchStart={onTouchStartEvent}
       onTouchMove={onTouchMoveEvent}
       onTouchEnd={onTouchEndEvent}
@@ -96,7 +96,7 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
           onClick={() => setIsFilterOpen(!isFilterOpen)}
           className="lg:hidden flex items-center justify-between bg-white px-4 py-3 rounded-xl shadow-sm border border-gray-100 font-semibold text-gray-800"
         >
-          <span>Filters & Sort</span>
+          <span>Sort</span>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className={`w-5 h-5 transition-transform ${isFilterOpen ? 'rotate-180' : ''}`}>
             <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
           </svg>
@@ -105,7 +105,7 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
         {/* Filter Panel */}
         <aside className={`${isFilterOpen ? 'block' : 'hidden'} lg:block w-full lg:w-64 shrink-0 space-y-6 bg-white p-5 rounded-xl shadow-sm border border-gray-100 h-fit`}>
           <div>
-            <h3 className="font-bold text-gray-900 mb-3 border-b pb-2">Sort By</h3>
+            <h3 className="font-bold text-[#F5C200] mb-3 border-b border-[#F5C200] pb-2">Sort By</h3>
             <div className="space-y-2">
               {[
                 { value: 'newest', label: 'Newest Arrivals' },
@@ -113,14 +113,14 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
                 { value: 'price-desc', label: 'Price: High to Low' },
                 { value: 'best-selling', label: 'Best Selling' },
               ].map(option => (
-                <label key={option.value} className="flex items-center gap-2 cursor-pointer text-sm text-gray-700">
+                <label key={option.value} className="flex items-center gap-2 cursor-pointer text-sm text-[#C9980A]">
                   <input 
                     type="radio" 
                     name="sort" 
                     value={option.value} 
                     checked={sortBy === option.value}
                     onChange={() => setSortBy(option.value as any)}
-                    className="text-brand-500 focus:ring-brand-500"
+                    className="text-[#F5C200] focus:ring-[#F5C200]"
                   />
                   {option.label}
                 </label>
@@ -128,27 +128,7 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
             </div>
           </div>
 
-          <div>
-            <h3 className="font-bold text-gray-900 mb-3 border-b pb-2">Filter</h3>
-            <label className="flex items-center gap-2 cursor-pointer text-sm text-gray-700">
-              <input 
-                type="checkbox" 
-                checked={inStockOnly}
-                onChange={(e) => setInStockOnly(e.target.checked)}
-                className="text-brand-500 focus:ring-brand-500 rounded"
-              />
-              In Stock Only
-            </label>
-            
-            <div className="mt-4">
-              <span className="text-sm font-semibold text-gray-700 block mb-2">Price Range (₦)</span>
-              <input type="range" className="w-full accent-brand-500" min="0" max="1000000" step="1000" />
-              <div className="flex justify-between text-xs text-gray-500 mt-1">
-                <span>₦0</span>
-                <span>₦1,000,000+</span>
-              </div>
-            </div>
-          </div>
+
         </aside>
 
         {/* Product Grid */}
@@ -171,8 +151,8 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
             </div>
           ) : products.length === 0 ? (
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-12 text-center flex flex-col items-center">
-              <div className="text-6xl mb-4">🛒</div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">No products in this category yet.</h3>
+              <div className="text-6xl mb-4 bg-[#F5C200]/20 w-24 h-24 rounded-full flex items-center justify-center">🛒</div>
+              <h3 className="text-xl font-bold text-[#C9980A] mb-2">No products in this category yet.</h3>
               <p className="text-gray-500">Check back soon! We're always adding new items.</p>
             </div>
           ) : (
