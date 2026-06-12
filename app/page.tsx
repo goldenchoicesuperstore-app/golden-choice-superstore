@@ -6,9 +6,6 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useCartStore } from "../store/cartStore";
 import { AuthContext } from "../lib/auth/AuthContext";
-import ProductCard from "../components/products/ProductCard";
-import Skeleton from "../components/ui/Skeleton";
-import { useProducts } from "../hooks/useProducts";
 
 
 export default function HomePage() {
@@ -18,18 +15,15 @@ export default function HomePage() {
   const pathname = usePathname();
   const router = useRouter();
 
-  const { products, loading } = useProducts();
 
-  const featuredProducts = (products || []).filter(p => p.isFeatured);
-  const dealsProducts = (products || []).filter(p => p.compareAtPrice && p.compareAtPrice > p.price);
-  const newArrivals = [...(products || [])].sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
 
   // Hero carousel state
   const [currentSlide, setCurrentSlide] = useState(0);
   const slides = [
-    { bg: "bg-brand-500", text: "text-white", title: "Fresh Deals Every Day", sub: "Up to 50% off on groceries" },
-    { bg: "bg-gradient-to-r from-[#FFE566] via-[#F5C200] to-[#C9980A] animate-shimmer", text: "text-gray-900", title: "Upgrade Your Gadgets Today", sub: "" },
-    { bg: "bg-white", text: "text-gray-900", title: "Baby Essentials", sub: "Everything your little one needs" },
+    { bg: "bg-gradient-to-r from-[#FFE566] to-[#F5C200]", text: "text-gray-900", title: "Welcome to Golden Choice Superstore", sub: "Your trusted store for everyday essentials", btnText: "Start Shopping", link: "/categories/hair-products" },
+    { bg: "bg-brand-500", text: "text-white", title: "Fresh Deals Every Day", sub: "Up to 50% off on groceries", btnText: "Shop Now", link: "/products" },
+    { bg: "bg-gradient-to-r from-[#FFE566] via-[#F5C200] to-[#C9980A] animate-shimmer", text: "text-gray-900", title: "Upgrade Your Gadgets Today", sub: "", btnText: "Shop Now", link: "/products" },
+    { bg: "bg-white", text: "text-gray-900", title: "Baby Essentials", sub: "Everything your little one needs", btnText: "Shop Now", link: "/products" },
   ];
 
   useEffect(() => {
@@ -39,27 +33,6 @@ export default function HomePage() {
     return () => clearInterval(timer);
   }, [slides.length]);
 
-  // Countdown timer state for deals
-  const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 0, seconds: 0 });
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      const now = new Date();
-      const midnight = new Date();
-      midnight.setHours(24, 0, 0, 0);
-      const diff = midnight.getTime() - now.getTime();
-      
-      if (diff > 0) {
-        setTimeLeft({
-          hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-          minutes: Math.floor((diff / 1000 / 60) % 60),
-          seconds: Math.floor((diff / 1000) % 60),
-        });
-      }
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -67,16 +40,6 @@ export default function HomePage() {
     if (query?.trim()) {
       router.push(`/search?q=${encodeURIComponent(query.trim())}`);
     }
-  };
-
-  const renderProductSkeletons = (count: number = 4) => {
-    return Array.from({ length: count }).map((_, i) => (
-      <div key={i} className="snap-start w-[160px] md:w-auto shrink-0 flex flex-col gap-2">
-        <Skeleton className="w-full aspect-square rounded-xl" />
-        <Skeleton className="w-3/4 h-4" />
-        <Skeleton className="w-1/2 h-4" />
-      </div>
-    ));
   };
 
   return (
@@ -129,98 +92,38 @@ export default function HomePage() {
       </header>
 
       {/* Main Content Padding for Fixed Header */}
-      <div className="pt-[110px]">
+      <div className="pt-[110px] min-h-screen flex flex-col pb-8 px-4 md:px-8">
         {/* Hero Carousel */}
-        <section className="relative w-full h-48 sm:h-64 overflow-hidden mt-2">
+        <section className="relative w-full flex-grow max-h-[700px] min-h-[400px] rounded-3xl overflow-hidden shadow-lg border border-gray-100">
           {slides.map((slide, index) => (
             <div 
               key={index}
-              className={`absolute inset-0 w-full h-full transition-transform duration-500 ease-in-out flex flex-col justify-center px-6 ${slide.bg} ${slide.text}`}
+              className={`absolute inset-0 w-full h-full transition-transform duration-500 ease-in-out flex flex-col items-center text-center justify-center px-6 md:px-16 ${slide.bg} ${slide.text}`}
               style={{ transform: `translateX(${(index - currentSlide) * 100}%)` }}
             >
-              <h2 className="text-3xl font-extrabold mb-2">{slide.title}</h2>
-              <p className="mb-4 opacity-90">{slide.sub}</p>
-              <button className={`w-fit px-6 py-2 font-bold rounded-full text-sm shadow-sm transition-all duration-300 hover:shadow-brand hover:scale-105 ${slide.bg === 'bg-white' ? 'bg-gradient-to-r from-brand-500 to-[#C9980A] text-white' : slide.bg.includes('animate-shimmer') ? 'bg-transparent border-2 border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white' : 'bg-white text-gray-900'}`}>
-                Shop Now
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 drop-shadow-sm">{slide.title}</h2>
+              {slide.sub && <p className="mb-8 text-lg md:text-xl font-medium opacity-90 max-w-2xl">{slide.sub}</p>}
+              <button 
+                onClick={() => router.push(slide.link)}
+                className={`w-fit px-8 py-3 font-bold rounded-full text-base shadow-md transition-all duration-300 hover:shadow-brand hover:scale-105 ${slide.bg === 'bg-white' ? 'bg-gradient-to-r from-brand-500 to-[#C9980A] text-white' : slide.bg.includes('animate-shimmer') || slide.bg.includes('from-[#FFE566]') ? 'bg-transparent border-2 border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white' : 'bg-white text-gray-900'}`}
+              >
+                {slide.btnText}
               </button>
             </div>
           ))}
           {/* Dots */}
-          <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
-            {slides.map((_, i) => (
-              <button 
-                key={i} 
-                onClick={() => setCurrentSlide(i)}
-                className={`w-2 h-2 rounded-full transition-all ${i === currentSlide ? 'bg-white w-4' : 'bg-white/50'}`}
-              />
-            ))}
-          </div>
-        </section>
-
-        {/* Featured Products */}
-        <section className="mt-8 px-4">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold text-gray-900 border-b-4 border-brand-500 pb-1 inline-block">Featured Products</h2>
-            <Link href="/products?featured=true" className="text-sm font-semibold text-brand-600">See All</Link>
-          </div>
-          <div className="flex overflow-x-auto gap-4 pb-4 snap-x hide-scrollbar md:grid md:grid-cols-4 md:gap-6 md:overflow-visible">
-            {loading ? renderProductSkeletons(4) : featuredProducts.length > 0 ? (
-              featuredProducts.map(product => (
-                <div key={product.id} className="snap-start w-[160px] md:w-auto shrink-0">
-                  <ProductCard product={product} />
-                </div>
-              ))
-            ) : (
-              <div className="w-full text-center py-6 text-gray-500 col-span-4 bg-gray-50 rounded-xl">
-                No featured products found.
-              </div>
-            )}
-          </div>
-        </section>
-
-        {/* Deals Section */}
-        <section className="mt-8 px-4 bg-red-50 py-6 rounded-xl mx-2 shadow-sm border border-red-100">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold text-red-600">Today's Deals</h2>
-            {/* Timer */}
-            <div className="flex items-center gap-1 text-sm font-bold bg-white px-2 py-1 rounded shadow-sm text-red-600">
-              <span className="bg-red-100 px-1 rounded">{String(timeLeft.hours).padStart(2, '0')}</span>:
-              <span className="bg-red-100 px-1 rounded">{String(timeLeft.minutes).padStart(2, '0')}</span>:
-              <span className="bg-red-100 px-1 rounded">{String(timeLeft.seconds).padStart(2, '0')}</span>
-            </div>
-          </div>
-          <div className="flex overflow-x-auto gap-4 pb-4 snap-x hide-scrollbar md:grid md:grid-cols-4 md:gap-6 md:overflow-visible">
-            {loading ? renderProductSkeletons(4) : dealsProducts.length > 0 ? (
-              dealsProducts.slice(0, 4).map(product => (
-                <div key={product.id} className="snap-start w-[160px] md:w-auto shrink-0">
-                  <ProductCard product={product} />
-                </div>
-              ))
-            ) : (
-              <div className="w-full text-center py-6 text-gray-500 col-span-4 bg-white/50 rounded-xl">
-                No deals available today.
-              </div>
-            )}
-          </div>
-        </section>
-
-        {/* New Arrivals */}
-        <section className="mt-8 px-4 mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold text-gray-900 border-b-4 border-brand-500 pb-1 inline-block">New Arrivals</h2>
-          </div>
-          <div className="flex overflow-x-auto gap-4 pb-4 snap-x hide-scrollbar md:grid md:grid-cols-4 md:gap-6 md:overflow-visible">
-            {loading ? renderProductSkeletons(4) : newArrivals.length > 0 ? (
-              newArrivals.map(product => (
-                <div key={product.id} className="snap-start w-[160px] md:w-auto shrink-0">
-                  <ProductCard product={product} />
-                </div>
-              ))
-            ) : (
-              <div className="w-full text-center py-6 text-gray-500 col-span-4 bg-gray-50 rounded-xl">
-                No new arrivals yet.
-              </div>
-            )}
+          <div className="absolute bottom-6 left-0 right-0 flex justify-center gap-3">
+            {slides.map((_, i) => {
+              const activeColor = slides[currentSlide].text === 'text-white' ? 'bg-white' : 'bg-gray-900';
+              const inactiveColor = slides[currentSlide].text === 'text-white' ? 'bg-white/50' : 'bg-gray-900/30';
+              return (
+                <button 
+                  key={i} 
+                  onClick={() => setCurrentSlide(i)}
+                  className={`h-2.5 rounded-full transition-all ${i === currentSlide ? `${activeColor} w-8` : `${inactiveColor} w-2.5`}`}
+                />
+              );
+            })}
           </div>
         </section>
       </div>
