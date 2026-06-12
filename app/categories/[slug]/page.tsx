@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useState } from "react";
+import { use, useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import ProductCard from "../../../components/products/ProductCard";
@@ -14,6 +14,23 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
   const router = useRouter();
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [showGoodbye, setShowGoodbye] = useState(false);
+
+  useEffect(() => {
+    if (slug !== 'hair-products') return;
+
+    window.history.pushState({ goodbyeTrap: true }, '');
+
+    const handlePopState = () => {
+      setShowGoodbye(true);
+      window.history.pushState({ goodbyeTrap: true }, '');
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [slug]);
   const [sortBy, setSortBy] = useState<'newest' | 'price-asc' | 'price-desc' | 'best-selling'>('newest');
   const [inStockOnly, setInStockOnly] = useState(false);
 
@@ -70,6 +87,19 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
       onTouchMove={onTouchMoveEvent}
       onTouchEnd={onTouchEndEvent}
     >
+      {showGoodbye && (
+        <div className="fixed inset-0 z-[99999] bg-gradient-to-r from-[#FFE566] to-[#F5C200] flex flex-col items-center justify-center p-6">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 text-center mb-8 drop-shadow-sm">
+            Goodbye! Hope to see you again soon
+          </h1>
+          <button 
+            onClick={() => setShowGoodbye(false)}
+            className="bg-white text-gray-900 font-bold text-lg py-3 px-8 rounded-full shadow-lg hover:scale-105 transition-transform"
+          >
+            Continue Shopping
+          </button>
+        </div>
+      )}
       <div className="-mx-4 md:-mx-8 px-4 md:px-8 py-8 mb-6 bg-gradient-to-r from-[#FFE566] via-[#F5C200] to-[#C9980A] animate-shimmer shadow-sm relative overflow-hidden">
         <div className="relative z-10">
           {/* Breadcrumb */}
