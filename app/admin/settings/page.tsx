@@ -52,6 +52,24 @@ export default function SettingsPage() {
         
         if (docSnap.exists()) {
           reset(docSnap.data() as SettingsFormData);
+        } else {
+          const defaultSettings = {
+            storeName: "Golden Choice Superstore",
+            email: "",
+            phone: "",
+            whatsapp: "",
+            address: "",
+            freeDeliveryThreshold: 0,
+            standardDeliveryFee: 0,
+            expressDeliveryFee: 0,
+            paystackPublicKey: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY || "",
+            payOnDeliveryEnabled: true,
+            emailNotifications: true,
+            whatsappNotifications: true,
+            updatedAt: serverTimestamp(),
+          };
+          await setDoc(docRef, defaultSettings);
+          reset(defaultSettings as SettingsFormData);
         }
       } catch (err) {
         console.error(err);
@@ -62,7 +80,8 @@ export default function SettingsPage() {
     };
     
     fetchSettings();
-  }, [reset, showToast]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onSubmit = async (data: SettingsFormData, section: string) => {
     setSavingSection(section);

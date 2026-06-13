@@ -15,7 +15,7 @@ export default function Header() {
   const router = useRouter();
 
   const hiddenRoutes = ["/", "/splash"];
-  if (hiddenRoutes.includes(pathname)) {
+  if (hiddenRoutes.includes(pathname) || pathname?.startsWith("/admin")) {
     return null;
   }
 
