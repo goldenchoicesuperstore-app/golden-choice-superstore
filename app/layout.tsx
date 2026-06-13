@@ -6,6 +6,7 @@ import { ToastProvider } from "../lib/context/ToastProvider";
 import BottomNav from "../components/layout/BottomNav";
 import ChatWidget from "../components/chat/ChatWidget";
 import SplashScreen from "./components/SplashScreen";
+import Header from "../components/layout/Header";
 
 export const metadata: Metadata = {
   title: "Golden Choice Superstore",
@@ -33,6 +34,7 @@ export default function RootLayout({
           <CartProvider>
             <ToastProvider>
               <SplashScreen />
+              <Header />
               {children}
               <ChatWidget />
               <BottomNav />
