@@ -50,7 +50,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <div className="flex h-screen bg-gray-50 overflow-hidden font-sans">
       {/* Sidebar */}
-      <aside className="w-72 bg-gradient-to-b from-[#4A3800] to-[#2A1F00] text-white flex flex-col hidden md:flex shrink-0 border-l-[3px] border-[#F5C200]">
+      <aside 
+        className="w-72 text-white flex flex-col hidden md:flex shrink-0 border-l-[3px] border-[#F5C200]"
+        style={{ background: 'linear-gradient(180deg, #B8860B 0%, #2A1F00 100%)' }}
+      >
         <div className="p-8 border-b border-gray-800">
           <h1 className="text-2xl font-black text-brand-500 flex items-center gap-2">
             <span className="text-3xl">⭐</span> Golden Choice
