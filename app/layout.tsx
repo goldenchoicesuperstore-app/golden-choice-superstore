@@ -36,7 +36,6 @@ export default function RootLayout({
               <SplashScreen />
               <Header />
               {children}
-              <ChatWidget />
               <BottomNav />
             </ToastProvider>
           </CartProvider>

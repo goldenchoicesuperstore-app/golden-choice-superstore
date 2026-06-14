@@ -50,7 +50,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <div className="flex h-screen bg-gray-50 overflow-hidden font-sans">
       {/* Sidebar */}
-      <aside className="w-72 bg-gradient-to-b from-[#3D2E00] to-[#1A1400] text-white flex flex-col hidden md:flex shrink-0">
+      <aside className="w-72 bg-gradient-to-b from-[#4A3800] to-[#2A1F00] text-white flex flex-col hidden md:flex shrink-0 border-l-[3px] border-[#F5C200]">
         <div className="p-8 border-b border-gray-800">
           <h1 className="text-2xl font-black text-brand-500 flex items-center gap-2">
             <span className="text-3xl">⭐</span> Golden Choice
@@ -64,7 +64,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <Link 
                 key={item.name} 
                 href={item.href}
-                className={`flex items-center gap-4 px-4 py-4 rounded-xl font-bold transition-all ${isActive ? 'bg-brand-500 text-gray-900 shadow-brand' : 'text-gray-400 hover:text-white hover:bg-gray-800'}`}
+                className={`flex items-center gap-4 px-4 py-4 rounded-xl font-bold transition-all ${isActive ? 'bg-brand-500 text-gray-900 shadow-brand' : 'text-gray-400 hover:text-[#F5C200] hover:bg-gray-800'}`}
               >
                 <span className="text-2xl">{item.icon}</span>
                 {item.name}

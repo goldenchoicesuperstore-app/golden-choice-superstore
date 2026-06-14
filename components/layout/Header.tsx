@@ -1,11 +1,12 @@
 "use client";
 
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useCartStore } from "../../store/cartStore";
 import { AuthContext } from "../../lib/auth/AuthContext";
+import ChatWidget from "../chat/ChatWidget";
 
 export default function Header() {
   const { itemCount } = useCartStore();
@@ -13,6 +14,11 @@ export default function Header() {
   const user = authContext?.user;
   const pathname = usePathname();
   const router = useRouter();
+
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const hiddenRoutes = ["/", "/splash"];
   if (hiddenRoutes.includes(pathname) || pathname?.startsWith("/admin")) {
@@ -36,26 +42,29 @@ export default function Header() {
         </Link>
         
         <div className="flex items-center gap-4">
+          {/* Chat Icon */}
+          <ChatWidget />
+
+          {/* Cart Icon */}
+          <Link href="/cart" className="relative text-gray-600 hover:text-[#F5C200] transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+            </svg>
+            {mounted && itemCount > 0 && (
+              <span className="absolute -top-1 -right-2 bg-[#F5C200] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full shadow-sm">
+                {itemCount}
+              </span>
+            )}
+          </Link>
+
           {/* User Avatar */}
-          <Link href={user ? "/account" : "/auth/login"} className="text-gray-600 hover:text-brand-500">
+          <Link href={user ? "/account" : "/auth/login"} className="text-gray-600 hover:text-[#F5C200] transition-colors">
             {user?.photoURL ? (
               <Image src={user.photoURL} alt="Avatar" width={32} height={32} className="w-8 h-8 rounded-full border border-brand-200" unoptimized />
             ) : (
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
               </svg>
-            )}
-          </Link>
-
-          {/* Cart Icon */}
-          <Link href="/cart" className="relative text-gray-600 hover:text-brand-500">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-            </svg>
-            {itemCount > 0 && (
-              <span className="absolute -top-1 -right-2 bg-brand-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
-                {itemCount}
-              </span>
             )}
           </Link>
         </div>
