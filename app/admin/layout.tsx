@@ -43,7 +43,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { name: "Orders", href: "/admin/orders", icon: "🛒" },
     { name: "Customers", href: "/admin/customers", icon: "👥" },
     { name: "Categories", href: "/admin/categories", icon: "📁" },
-    { name: "Coupons", href: "/admin/coupons", icon: "🏷️" },
     { name: "Chat Support", href: "/admin/chat", icon: "💬" },
     { name: "Settings", href: "/admin/settings", icon: "⚙️" },
   ];
@@ -51,7 +50,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <div className="flex h-screen bg-gray-50 overflow-hidden font-sans">
       {/* Sidebar */}
-      <aside className="w-72 bg-[#1A1A1A] text-white flex flex-col hidden md:flex shrink-0">
+      <aside className="w-72 bg-gradient-to-b from-[#3D2E00] to-[#1A1400] text-white flex flex-col hidden md:flex shrink-0">
         <div className="p-8 border-b border-gray-800">
           <h1 className="text-2xl font-black text-brand-500 flex items-center gap-2">
             <span className="text-3xl">⭐</span> Golden Choice

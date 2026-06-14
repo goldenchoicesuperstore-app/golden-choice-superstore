@@ -52,12 +52,20 @@ export default function AdminProductsPage() {
           <h1 className="text-3xl font-extrabold text-gray-900 mb-2">Products ({products.length})</h1>
           <p className="text-gray-500 font-bold">Manage all products in your store.</p>
         </div>
-        <Link 
-          href="/admin/products/new"
-          className="px-6 py-3 bg-[#FFD700] text-gray-900 font-extrabold rounded-xl hover:bg-[#F4CE00] transition-all shadow-sm flex items-center gap-2"
-        >
-          Add New Product
-        </Link>
+        <div className="flex items-center gap-4">
+          <Link 
+            href="/admin/products/bulk"
+            className="px-6 py-3 bg-gray-900 text-white font-extrabold rounded-xl hover:bg-gray-800 transition-all shadow-sm flex items-center gap-2"
+          >
+            Add Multiple Products
+          </Link>
+          <Link 
+            href="/admin/products/new"
+            className="px-6 py-3 bg-[#FFD700] text-gray-900 font-extrabold rounded-xl hover:bg-[#F4CE00] transition-all shadow-sm flex items-center gap-2"
+          >
+            Add New Product
+          </Link>
+        </div>
       </div>
 
       <div className="bg-white rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden">

@@ -9,7 +9,6 @@ import { useCartStore } from "../../store/cartStore";
 export default function CartPage() {
   const router = useRouter();
   const { items, subtotal, deliveryFee, tax, total, updateQuantity, removeItem } = useCartStore();
-  const [couponCode, setCouponCode] = useState("");
 
   if (items.length === 0) {
     return (
@@ -113,20 +112,7 @@ export default function CartPage() {
               </div>
             </div>
 
-            <div className="mb-6">
-              <div className="flex gap-2">
-                <input 
-                  type="text" 
-                  placeholder="Coupon code" 
-                  value={couponCode}
-                  onChange={(e) => setCouponCode(e.target.value)}
-                  className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm font-medium focus:outline-none focus:border-brand-500 focus:bg-white transition-colors"
-                />
-                <button className="bg-gray-900 text-white px-5 py-3 rounded-xl font-bold text-sm hover:bg-gray-800 transition-colors">
-                  Apply
-                </button>
-              </div>
-            </div>
+
 
             <button 
               onClick={() => router.push("/checkout")}
