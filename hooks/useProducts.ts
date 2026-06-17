@@ -63,8 +63,10 @@ export const useProducts = (options?: UseProductsOptions) => {
               return bSales - aSales;
             case 'newest':
             default:
-              const timeA = a.createdAt?.toMillis ? a.createdAt.toMillis() : (a.createdAt ? new Date(a.createdAt).getTime() : 0);
-              const timeB = b.createdAt?.toMillis ? b.createdAt.toMillis() : (b.createdAt ? new Date(b.createdAt).getTime() : 0);
+              const valA = a.createdAt as any;
+              const valB = b.createdAt as any;
+              const timeA = valA?.toMillis ? valA.toMillis() : (valA ? new Date(valA).getTime() : 0);
+              const timeB = valB?.toMillis ? valB.toMillis() : (valB ? new Date(valB).getTime() : 0);
               return timeB - timeA;
           }
         });
