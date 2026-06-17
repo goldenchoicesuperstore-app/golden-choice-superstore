@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { 
-  getFirestore, collection, query, where, orderBy, limit, getDocs, startAfter, QueryDocumentSnapshot, DocumentData
+  getFirestore, collection, query, where, getDocs
 } from 'firebase/firestore';
 import { app } from '../lib/firebase/config';
 import { Product } from '../types';
@@ -16,11 +16,9 @@ export const useProducts = (options?: UseProductsOptions) => {
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState<Error | null>(null);
-  const [hasMore, setHasMore] = useState(true);
-  const [lastDoc, setLastDoc] = useState<QueryDocumentSnapshot<DocumentData> | null>(null);
+  const [hasMore, setHasMore] = useState(false);
 
   const db = getFirestore(app);
-  const PAGE_LIMIT = 24;
 
   const getQueryConstraints = () => {
     // Only fetch published products
@@ -33,22 +31,6 @@ export const useProducts = (options?: UseProductsOptions) => {
       constraints.push(where('inStock', '==', true));
     }
 
-    switch (options?.sortBy) {
-      case 'price-asc':
-        constraints.push(orderBy('price', 'asc'));
-        break;
-      case 'price-desc':
-        constraints.push(orderBy('price', 'desc'));
-        break;
-      case 'best-selling':
-        constraints.push(orderBy('soldCount', 'desc'));
-        break;
-      case 'newest':
-      default:
-        constraints.push(orderBy('createdAt', 'desc'));
-        break;
-    }
-
     return constraints;
   };
 
@@ -59,19 +41,36 @@ export const useProducts = (options?: UseProductsOptions) => {
         setError(null);
 
         const constraints = getQueryConstraints();
-        constraints.push(limit(PAGE_LIMIT));
 
         const q = query(collection(db, 'products'), ...constraints);
         const snapshot = await getDocs(q);
 
-        const fetchedProducts: Product[] = [];
+        let fetchedProducts: Product[] = [];
         snapshot.forEach((doc) => {
           fetchedProducts.push({ id: doc.id, ...doc.data() } as Product);
         });
 
+        // Client-side sorting
+        fetchedProducts.sort((a, b) => {
+          switch (options?.sortBy) {
+            case 'price-asc':
+              return (a.price || 0) - (b.price || 0);
+            case 'price-desc':
+              return (b.price || 0) - (a.price || 0);
+            case 'best-selling':
+              const aSales = a.soldCount ?? (a as any).sales ?? 0;
+              const bSales = b.soldCount ?? (b as any).sales ?? 0;
+              return bSales - aSales;
+            case 'newest':
+            default:
+              const timeA = a.createdAt?.toMillis ? a.createdAt.toMillis() : (a.createdAt ? new Date(a.createdAt).getTime() : 0);
+              const timeB = b.createdAt?.toMillis ? b.createdAt.toMillis() : (b.createdAt ? new Date(b.createdAt).getTime() : 0);
+              return timeB - timeA;
+          }
+        });
+
         setProducts(fetchedProducts);
-        setLastDoc(snapshot.docs[snapshot.docs.length - 1] || null);
-        setHasMore(snapshot.docs.length === PAGE_LIMIT);
+        setHasMore(false);
       } catch (err) {
         setError(err as Error);
       } finally {
@@ -83,30 +82,7 @@ export const useProducts = (options?: UseProductsOptions) => {
   }, [options?.categorySlug, options?.sortBy, options?.inStockOnly]);
 
   const loadMore = async () => {
-    if (!hasMore || loadingMore || !lastDoc) return;
-
-    try {
-      setLoadingMore(true);
-      const constraints = getQueryConstraints();
-      constraints.push(startAfter(lastDoc));
-      constraints.push(limit(PAGE_LIMIT));
-
-      const q = query(collection(db, 'products'), ...constraints);
-      const snapshot = await getDocs(q);
-
-      const fetchedProducts: Product[] = [];
-      snapshot.forEach((doc) => {
-        fetchedProducts.push({ id: doc.id, ...doc.data() } as Product);
-      });
-
-      setProducts(prev => [...prev, ...fetchedProducts]);
-      setLastDoc(snapshot.docs[snapshot.docs.length - 1] || null);
-      setHasMore(snapshot.docs.length === PAGE_LIMIT);
-    } catch (err) {
-      setError(err as Error);
-    } finally {
-      setLoadingMore(false);
-    }
+    // No-op since we fetched all products
   };
 
   return { products, loading, loadingMore, error, hasMore, loadMore };
