@@ -18,6 +18,10 @@ export interface User {
   createdAt: string;
   /** Number of loyalty points the user has accumulated */
   loyaltyPoints: number;
+  /** Indicates if the admin is a super admin */
+  superAdmin?: boolean;
+  /** Array of admin sections this user has permission to access */
+  permissions?: string[];
 }
 
 /**

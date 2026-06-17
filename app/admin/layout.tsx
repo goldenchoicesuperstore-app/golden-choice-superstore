@@ -38,14 +38,36 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const adminName = user.displayName || "Admin";
 
   const navItems = [
-    { name: "Dashboard", href: "/admin", icon: "📊" },
-    { name: "Products", href: "/admin/products", icon: "📦" },
-    { name: "Orders", href: "/admin/orders", icon: "🛒" },
-    { name: "Customers", href: "/admin/customers", icon: "👥" },
-    { name: "Categories", href: "/admin/categories", icon: "📁" },
-    { name: "Chat Support", href: "/admin/chat", icon: "💬" },
-    { name: "Settings", href: "/admin/settings", icon: "⚙️" },
+    { name: "Dashboard", href: "/admin", icon: "📊", permission: "dashboard" }, // everyone has dashboard
+    { name: "Products", href: "/admin/products", icon: "📦", permission: "products" },
+    { name: "Orders", href: "/admin/orders", icon: "🛒", permission: "orders" },
+    { name: "Customers", href: "/admin/customers", icon: "👥", permission: "customers" },
+    { name: "Categories", href: "/admin/categories", icon: "📁", permission: "categories" },
+    { name: "Chat Support", href: "/admin/chat", icon: "💬", permission: "chat" },
+    { name: "Settings", href: "/admin/settings", icon: "⚙️", permission: "settings" },
   ];
+
+  if (user.superAdmin) {
+    navItems.push({ name: "Admin Management", href: "/admin/management", icon: "🛡️", permission: "management" });
+  }
+
+  // Determine if user has access to current path
+  let hasAccess = false;
+  if (user.superAdmin) {
+    hasAccess = true;
+  } else {
+    // If it's the main dashboard or user has permission
+    if (pathname === '/admin') {
+      hasAccess = true;
+    } else {
+      const currentNavItem = navItems.find(item => pathname.startsWith(item.href) && item.href !== '/admin');
+      if (currentNavItem) {
+        hasAccess = user.permissions?.includes(currentNavItem.permission) || false;
+      } else {
+        hasAccess = true; // Fallback for unknown routes
+      }
+    }
+  }
 
   return (
     <div className="flex h-screen bg-gray-50 overflow-hidden font-sans">
@@ -62,6 +84,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
         <nav className="flex-1 overflow-y-auto py-6 px-4 space-y-2">
           {navItems.map(item => {
+            // Only render if superAdmin or has permission
+            if (!user.superAdmin && item.href !== '/admin' && !user.permissions?.includes(item.permission)) {
+              return null;
+            }
+
             const isActive = item.href === '/admin' ? pathname === '/admin' : pathname.startsWith(item.href);
             return (
               <Link 
@@ -87,7 +114,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <div className="flex items-center gap-8 ml-auto">
             <div className="text-right hidden sm:block">
               <p className="text-base font-extrabold text-gray-900">{adminName}</p>
-              <p className="text-[10px] font-black text-brand-500 uppercase tracking-widest mt-1">Super Admin</p>
+              <p className="text-[10px] font-black text-brand-500 uppercase tracking-widest mt-1">
+                {user.superAdmin ? "Super Admin" : "Admin"}
+              </p>
             </div>
             <button 
               onClick={() => { logout(); router.push('/auth/login'); }}
@@ -99,9 +128,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-y-auto p-10">
+        <main className="flex-1 overflow-y-auto p-10 relative">
           <ToastProvider>
-            {children}
+            {!hasAccess ? (
+              <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-gray-50">
+                <div className="text-[#F5C200] text-6xl mb-6">🔒</div>
+                <h2 className="text-3xl font-extrabold text-gray-900 mb-2">Access Denied</h2>
+                <p className="text-gray-500 font-medium text-lg">You don't have the clearance for this page</p>
+              </div>
+            ) : (
+              children
+            )}
           </ToastProvider>
         </main>
       </div>

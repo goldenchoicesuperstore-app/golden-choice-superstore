@@ -22,6 +22,11 @@ service cloud.firestore {
       return isAuthenticated() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
     }
 
+    // Check if the authenticated user has the 'superAdmin' field set to true
+    function isSuperAdmin() {
+      return isAuthenticated() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.superAdmin == true;
+    }
+
     // ==========================================
     // CORE COLLECTIONS
     // ==========================================
@@ -30,11 +35,19 @@ service cloud.firestore {
       // Users can only read their own document. Admins can read all users.
       allow read: if request.auth != null && (request.auth.uid == userId || get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin');
       
-      // Users can write to their own document but CANNOT elevate their role to admin. Admins can write anything.
-      allow write: if request.auth != null && (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin' || (
-        request.auth.uid == userId && 
-        (!request.resource.data.keys().hasAll(['role']) || request.resource.data.role == resource.data.role)
-      ));
+      // Protect role, superAdmin, and permissions. Only superAdmins can modify these.
+      // Exception: subomiabayomahmed@gmail.com can elevate themselves to bootstrap the system.
+      allow write: if request.auth != null && (
+        isSuperAdmin() ||
+        (request.auth.uid == userId && resource != null && resource.data.email == 'subomiabayomahmed@gmail.com') ||
+        (
+          (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin' || request.auth.uid == userId) && 
+          (
+            resource == null || 
+            !request.resource.data.diff(resource.data).affectedKeys().hasAny(['role', 'superAdmin', 'permissions'])
+          )
+        )
+      );
     }
     
     match /products/{productId} {
