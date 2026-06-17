@@ -3,6 +3,7 @@
 import { use, useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 import ProductCard from "../../../components/products/ProductCard";
 import { getCategoryBySlug, CATEGORIES } from "../../../lib/data/categories";
 import { useProducts } from "../../../hooks/useProducts";
@@ -101,6 +102,15 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
         </div>
       )}
       <div className="-mx-4 md:-mx-8 px-4 md:px-8 py-8 mb-6 bg-gradient-to-r from-[#FFE566] via-[#F5C200] to-[#C9980A] animate-shimmer shadow-sm relative overflow-hidden">
+        {/* Glow Pulse Overlay */}
+        <motion.div
+          className="absolute inset-0 z-0 pointer-events-none"
+          style={{
+            background: 'radial-gradient(circle at center, rgba(255, 245, 180, 0.4) 0%, transparent 70%)'
+          }}
+          animate={{ opacity: [0.4, 0.8, 0.4] }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        />
         <div className="relative z-10">
           {/* Breadcrumb */}
           <nav className="text-sm text-gray-900/70 mb-4 flex items-center gap-2 font-medium">
@@ -112,10 +122,38 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
           {/* Header */}
           <div>
             <div className="flex items-center gap-3 mb-2">
-              <span className="text-4xl drop-shadow-sm">{category.icon}</span>
-              <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">{category.name}</h1>
+              <motion.span 
+                className="text-4xl drop-shadow-sm inline-block"
+                animate={{ y: [0, -6, 0] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              >
+                {category.icon}
+              </motion.span>
+              <motion.h1 
+                className="text-3xl md:text-4xl font-extrabold tracking-tight text-transparent bg-clip-text"
+                style={{ 
+                  backgroundImage: 'linear-gradient(90deg, #111827 0%, #111827 40%, #F5C200 48%, #FFFFFF 50%, #F5C200 52%, #111827 60%, #111827 100%)',
+                  backgroundSize: '300% auto' 
+                }}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0, backgroundPosition: ['200% center', '-100% center'] }}
+                transition={{
+                  opacity: { duration: 0.5 },
+                  y: { duration: 0.5 },
+                  backgroundPosition: { duration: 3, repeat: Infinity, ease: "linear" }
+                }}
+              >
+                {category.name}
+              </motion.h1>
             </div>
-            <p className="text-gray-900/90 font-medium max-w-2xl">{category.description}</p>
+            <motion.p 
+              className="text-gray-900/90 font-medium max-w-2xl"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+            >
+              {category.description}
+            </motion.p>
           </div>
         </div>
       </div>
