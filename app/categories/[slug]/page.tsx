@@ -120,43 +120,46 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
           </nav>
 
           {/* Header */}
-          <div>
-            <div className="flex items-center gap-3 mb-2">
-              <motion.span 
-                className="text-4xl drop-shadow-sm inline-block"
-                animate={{ y: [0, -6, 0] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-              >
-                {category.icon}
-              </motion.span>
-              <motion.h1 
-                className="text-3xl md:text-4xl font-extrabold tracking-tight text-transparent bg-clip-text"
-                style={{ 
-                  backgroundImage: 'linear-gradient(90deg, #111827 0%, #111827 40%, #F5C200 48%, #FFFFFF 50%, #F5C200 52%, #111827 60%, #111827 100%)',
-                  backgroundSize: '300% auto' 
-                }}
+          {/* Header */}
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div className="flex-1">
+              <div className="flex items-center gap-3 mb-2">
+                <motion.span 
+                  className="text-4xl drop-shadow-sm inline-block"
+                  animate={{ y: [0, -6, 0] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  {category.icon}
+                </motion.span>
+                <motion.h1 
+                  className="text-3xl md:text-4xl font-extrabold tracking-tight text-transparent bg-clip-text"
+                  style={{ 
+                    backgroundImage: 'linear-gradient(90deg, #111827 0%, #111827 40%, #F5C200 48%, #FFFFFF 50%, #F5C200 52%, #111827 60%, #111827 100%)',
+                    backgroundSize: '300% auto' 
+                  }}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0, backgroundPosition: ['200% center', '-100% center'] }}
+                  transition={{
+                    opacity: { duration: 0.5 },
+                    y: { duration: 0.5 },
+                    backgroundPosition: { duration: 3, repeat: Infinity, ease: "linear" }
+                  }}
+                >
+                  {category.name}
+                </motion.h1>
+              </div>
+              <motion.p 
+                className="text-gray-900/90 font-medium max-w-2xl"
                 initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0, backgroundPosition: ['200% center', '-100% center'] }}
-                transition={{
-                  opacity: { duration: 0.5 },
-                  y: { duration: 0.5 },
-                  backgroundPosition: { duration: 3, repeat: Infinity, ease: "linear" }
-                }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
               >
-                {category.name}
-              </motion.h1>
+                {category.description}
+              </motion.p>
             </div>
-            <motion.p 
-              className="text-gray-900/90 font-medium max-w-2xl"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-            >
-              {category.description}
-            </motion.p>
             {(slug === 'electronics' || slug === 'phones') && (
               <motion.div
-                className="mt-4 text-white font-bold text-lg md:text-xl flex items-center gap-2 w-fit"
+                className="text-white font-bold text-lg md:text-xl flex items-center gap-2 w-fit shrink-0"
                 initial={{ opacity: 0, scale: 2.5 }}
                 animate={{ 
                   opacity: 1, 
@@ -220,7 +223,7 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
                     value={option.value} 
                     checked={sortBy === option.value}
                     onChange={() => setSortBy(option.value as any)}
-                    className="text-[#F5C200] focus:ring-[#F5C200]"
+                    className="accent-[#F5C200] text-[#F5C200] focus:ring-[#F5C200]"
                   />
                   {option.label}
                 </label>
