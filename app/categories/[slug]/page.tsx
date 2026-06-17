@@ -154,6 +154,38 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
             >
               {category.description}
             </motion.p>
+            {(slug === 'electronics' || slug === 'phones') && (
+              <motion.div
+                className="mt-4 text-white font-bold text-lg md:text-xl flex items-center gap-2 w-fit"
+                initial={{ opacity: 0, scale: 2.5 }}
+                animate={{ 
+                  opacity: 1, 
+                  scale: 1,
+                  textShadow: ["0px 0px 0px rgba(255,255,255,0)", "0px 0px 20px rgba(255,255,255,1)", "0px 0px 0px rgba(255,255,255,0)"]
+                }}
+                transition={{
+                  opacity: { delay: 1, duration: 0.2 },
+                  scale: { delay: 1, type: "spring", stiffness: 300, damping: 15 },
+                  textShadow: { delay: 1.5, duration: 1.5, repeat: Infinity, ease: "easeInOut" }
+                }}
+              >
+                <motion.span 
+                  animate={{ rotate: 360 }} 
+                  transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                  className="inline-block text-2xl"
+                >
+                  ✨
+                </motion.span>
+                <span>Buy Now, Pay Back Monthly for 6 Months! 💳</span>
+                <motion.span 
+                  animate={{ rotate: -360 }} 
+                  transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                  className="inline-block text-2xl"
+                >
+                  ✨
+                </motion.span>
+              </motion.div>
+            )}
           </div>
         </div>
       </div>
