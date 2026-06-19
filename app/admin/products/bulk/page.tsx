@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { getFirestore, collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { app } from "../../../../lib/firebase/config";
 import { useToast } from "../../../../components/ui/Toast";
+import PexelsSearch from "../components/PexelsSearch";
 
 const categories = [
   { name: "Hair Products", slug: "hair-products" },
@@ -46,7 +47,7 @@ export default function BulkAddProductsPage() {
   const { showToast } = useToast();
   const [saving, setSaving] = useState(false);
 
-  const { register, control, handleSubmit, watch, formState: { errors } } = useForm<BulkFormData>({
+  const { register, control, handleSubmit, watch, setValue, formState: { errors } } = useForm<BulkFormData>({
     resolver: zodResolver(bulkSchema),
     defaultValues: {
       products: [{
@@ -218,6 +219,12 @@ export default function BulkAddProductsPage() {
                   />
                   {productErrors?.imageUrl && <p className="text-red-500 text-sm mt-1">{productErrors.imageUrl.message}</p>}
                   
+                  <PexelsSearch 
+                    onSelect={(url) => {
+                      setValue(`products.${index}.imageUrl`, url, { shouldValidate: true, shouldDirty: true });
+                    }} 
+                  />
+
                   {/* Image Preview */}
                   <div className="mt-4 border rounded-xl overflow-hidden bg-gray-50 flex items-center justify-center min-h-[150px] w-full max-w-sm">
                     {currentImageUrl ? (

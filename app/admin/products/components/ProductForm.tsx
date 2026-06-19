@@ -9,6 +9,7 @@ import { getFirestore, collection, addDoc, doc, updateDoc, serverTimestamp } fro
 import { app } from "../../../../lib/firebase/config";
 import { useToast } from "../../../../components/ui/Toast";
 import { Product } from "../../../../types";
+import PexelsSearch from "./PexelsSearch";
 
 const categories = [
   { name: "Hair Products", slug: "hair-products" },
@@ -44,7 +45,7 @@ export default function ProductForm({ initialData, productId }: { initialData?: 
   const [saving, setSaving] = useState(false);
   const [imgError, setImgError] = useState(false);
   
-  const { register, handleSubmit, watch, formState: { errors } } = useForm<ProductFormData>({
+  const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
     defaultValues: initialData || {
       name: "", category: "", brand: "", description: "", price: 0, compareAtPrice: null,
@@ -193,6 +194,13 @@ export default function ProductForm({ initialData, productId }: { initialData?: 
           />
           {errors.imageUrl && <p className="text-red-500 text-sm mt-1">{errors.imageUrl.message}</p>}
           
+          <PexelsSearch 
+            onSelect={(url) => {
+              setValue("imageUrl", url, { shouldValidate: true, shouldDirty: true });
+              setImgError(false);
+            }} 
+          />
+
           {/* Image Preview */}
           <div className="mt-4 border rounded-xl overflow-hidden bg-gray-50 flex items-center justify-center min-h-[200px] w-full max-w-md">
             {imageUrl && !imgError ? (
