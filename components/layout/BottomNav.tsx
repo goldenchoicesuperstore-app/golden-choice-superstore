@@ -64,10 +64,8 @@ export default function BottomNav() {
                       animate={activeLinkPulse}
                       style={{ transition: "all 2s ease-in-out" }}
                     />
-                    <span className="text-[#C9980A] relative z-20 flex items-center justify-center w-full h-full">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
-                      </svg>
+                    <span className="relative z-20 flex items-center justify-center w-full h-full overflow-hidden rounded-full p-[2px]">
+                      <img src="/nav-icons/home.png" alt="Home" className="w-full h-full object-cover rounded-full" />
                     </span>
                   </div>
                   <motion.span 
@@ -80,10 +78,8 @@ export default function BottomNav() {
                 </>
               ) : (
                 <>
-                  <div className="flex items-center justify-center w-12 h-12 rounded-full bg-white/20 group-hover:bg-white/30 mb-1 z-10 relative drop-shadow-sm transition-colors duration-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
-                    </svg>
+                  <div className="flex items-center justify-center w-12 h-12 rounded-full bg-white/20 group-hover:bg-white/30 mb-1 z-10 relative drop-shadow-sm transition-colors duration-300 overflow-hidden p-[2px]">
+                    <img src="/nav-icons/home.png" alt="Home" className="w-full h-full object-cover rounded-full" />
                   </div>
                   <span className="text-[10px] font-bold text-center leading-tight whitespace-nowrap opacity-90 relative z-10">
                     Home
@@ -118,8 +114,8 @@ export default function BottomNav() {
                           animate={activeLinkPulse}
                           style={{ transition: "all 2s ease-in-out" }}
                         />
-                        <span className="text-2xl text-[#C9980A] relative z-20 flex items-center justify-center w-full h-full">
-                          {cat.icon}
+                        <span className="relative z-20 flex items-center justify-center w-full h-full overflow-hidden rounded-full p-[2px]">
+                          <img src={`/nav-icons/${cat.slug}.png`} alt={cat.name} className="w-full h-full object-cover rounded-full" />
                         </span>
                       </div>
                       <motion.span 
@@ -132,8 +128,8 @@ export default function BottomNav() {
                     </>
                   ) : (
                     <>
-                      <div className="flex items-center justify-center w-12 h-12 rounded-full bg-white/20 group-hover:bg-white/30 mb-1 z-10 relative drop-shadow-sm transition-colors duration-300">
-                        <span className="text-2xl">{cat.icon}</span>
+                      <div className="flex items-center justify-center w-12 h-12 rounded-full bg-white/20 group-hover:bg-white/30 mb-1 z-10 relative drop-shadow-sm transition-colors duration-300 overflow-hidden p-[2px]">
+                        <img src={`/nav-icons/${cat.slug}.png`} alt={cat.name} className="w-full h-full object-cover rounded-full" />
                       </div>
                       <span className="text-[10px] font-bold text-center leading-tight whitespace-nowrap opacity-90 relative z-10">
                         {cat.name}
