@@ -101,97 +101,134 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
           </button>
         </div>
       )}
-      <div className="-mx-4 md:-mx-8 px-4 md:px-8 py-8 mb-6 bg-gradient-to-r from-[#FFE566] via-[#F5C200] to-[#C9980A] animate-shimmer shadow-sm relative overflow-hidden">
-        {/* Glow Pulse Overlay */}
-        <motion.div
-          className="absolute inset-0 z-0 pointer-events-none"
-          style={{
-            background: 'radial-gradient(circle at center, rgba(255, 245, 180, 0.4) 0%, transparent 70%)'
-          }}
-          animate={{ opacity: [0.4, 0.8, 0.4] }}
-          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <div className="relative z-10">
-          {/* Breadcrumb */}
-          <nav className="text-sm text-gray-900/70 mb-4 flex items-center gap-2 font-medium">
-            <Link href="/" className="hover:text-gray-900 transition-colors">Home</Link>
-            <span>&gt;</span>
-            <span className="text-gray-900 font-bold">{category.name}</span>
-          </nav>
-
-          {/* Header */}
-          {/* Header */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div className="flex-1">
-              <div className="flex items-center gap-3 mb-2">
-                <motion.span 
-                  className="text-4xl drop-shadow-sm inline-block"
-                  animate={{ y: [0, -6, 0] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                >
-                  {category.icon}
-                </motion.span>
-                <motion.h1 
-                  className="text-3xl md:text-4xl font-extrabold tracking-tight text-transparent bg-clip-text"
-                  style={{ 
-                    backgroundImage: 'linear-gradient(90deg, #111827 0%, #111827 40%, #F5C200 48%, #FFFFFF 50%, #F5C200 52%, #111827 60%, #111827 100%)',
-                    backgroundSize: '300% auto' 
-                  }}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0, backgroundPosition: ['200% center', '-100% center'] }}
-                  transition={{
-                    opacity: { duration: 0.5 },
-                    y: { duration: 0.5 },
-                    backgroundPosition: { duration: 3, repeat: Infinity, ease: "linear" }
-                  }}
-                >
-                  {category.name}
-                </motion.h1>
-              </div>
-              <motion.p 
-                className="text-gray-900/90 font-medium max-w-2xl"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-              >
-                {category.description}
-              </motion.p>
+      {slug === 'hair-products' ? (
+        <div className="-mx-4 md:-mx-8 px-4 md:px-8 mb-6">
+          <div className="py-4">
+            {/* Breadcrumb */}
+            <nav className="text-sm text-gray-900/70 mb-4 flex items-center gap-2 font-medium">
+              <Link href="/" className="hover:text-gray-900 transition-colors">Home</Link>
+              <span>&gt;</span>
+              <span className="text-gray-900 font-bold">{category.name}</span>
+            </nav>
+            
+            <div className="relative w-full overflow-hidden rounded-xl shadow-sm">
+              <img 
+                src="https://i.postimg.cc/85r522dr/Chat-GPT-Image-Jun-20-2026-03-55-30-PM.png" 
+                alt="Hair Products"
+                className="w-full h-auto block"
+              />
+              {/* Invisible clickable overlay for the 'Shop Now' button */}
+              <div 
+                onClick={() => {
+                  document.getElementById('product-grid')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="absolute cursor-pointer"
+                style={{
+                  top: '60%',
+                  left: '15%',
+                  width: '25%',
+                  height: '25%',
+                  zIndex: 10,
+                  backgroundColor: 'transparent'
+                }}
+                title="Shop Now"
+              />
             </div>
-            {(slug === 'electronics' || slug === 'phones') && (
-              <motion.div
-                className="text-white font-bold text-lg md:text-xl flex items-center gap-2 w-fit shrink-0"
-                initial={{ opacity: 0, scale: 2.5 }}
-                animate={{ 
-                  opacity: 1, 
-                  scale: 1,
-                  textShadow: ["0px 0px 0px rgba(255,255,255,0)", "0px 0px 20px rgba(255,255,255,1)", "0px 0px 0px rgba(255,255,255,0)"]
-                }}
-                transition={{
-                  opacity: { delay: 1, duration: 0.2 },
-                  scale: { delay: 1, type: "spring", stiffness: 300, damping: 15 },
-                  textShadow: { delay: 1.5, duration: 1.5, repeat: Infinity, ease: "easeInOut" }
-                }}
-              >
-                <motion.span 
-                  animate={{ rotate: 360 }} 
-                  transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                  className="inline-block text-2xl"
-                >
-                  ✨
-                </motion.span>
-                <span>Buy Now, Pay Back Monthly for 6 Months! 💳</span>
-                <motion.span 
-                  animate={{ rotate: -360 }} 
-                  transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                  className="inline-block text-2xl"
-                >
-                  ✨
-                </motion.span>
-              </motion.div>
-            )}
           </div>
         </div>
-      </div>
+      ) : (
+        <div className="-mx-4 md:-mx-8 px-4 md:px-8 py-8 mb-6 bg-gradient-to-r from-[#FFE566] via-[#F5C200] to-[#C9980A] animate-shimmer shadow-sm relative overflow-hidden">
+          {/* Glow Pulse Overlay */}
+          <motion.div
+            className="absolute inset-0 z-0 pointer-events-none"
+            style={{
+              background: 'radial-gradient(circle at center, rgba(255, 245, 180, 0.4) 0%, transparent 70%)'
+            }}
+            animate={{ opacity: [0.4, 0.8, 0.4] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <div className="relative z-10">
+            {/* Breadcrumb */}
+            <nav className="text-sm text-gray-900/70 mb-4 flex items-center gap-2 font-medium">
+              <Link href="/" className="hover:text-gray-900 transition-colors">Home</Link>
+              <span>&gt;</span>
+              <span className="text-gray-900 font-bold">{category.name}</span>
+            </nav>
+
+            {/* Header */}
+            {/* Header */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+              <div className="flex-1">
+                <div className="flex items-center gap-3 mb-2">
+                  <motion.span 
+                    className="text-4xl drop-shadow-sm inline-block"
+                    animate={{ y: [0, -6, 0] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    {category.icon}
+                  </motion.span>
+                  <motion.h1 
+                    className="text-3xl md:text-4xl font-extrabold tracking-tight text-transparent bg-clip-text"
+                    style={{ 
+                      backgroundImage: 'linear-gradient(90deg, #111827 0%, #111827 40%, #F5C200 48%, #FFFFFF 50%, #F5C200 52%, #111827 60%, #111827 100%)',
+                      backgroundSize: '300% auto' 
+                    }}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0, backgroundPosition: ['200% center', '-100% center'] }}
+                    transition={{
+                      opacity: { duration: 0.5 },
+                      y: { duration: 0.5 },
+                      backgroundPosition: { duration: 3, repeat: Infinity, ease: "linear" }
+                    }}
+                  >
+                    {category.name}
+                  </motion.h1>
+                </div>
+                <motion.p 
+                  className="text-gray-900/90 font-medium max-w-2xl"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                >
+                  {category.description}
+                </motion.p>
+              </div>
+              {(slug === 'electronics' || slug === 'phones') && (
+                <motion.div
+                  className="text-white font-bold text-lg md:text-xl flex items-center gap-2 w-fit shrink-0"
+                  initial={{ opacity: 0, scale: 2.5 }}
+                  animate={{ 
+                    opacity: 1, 
+                    scale: 1,
+                    textShadow: ["0px 0px 0px rgba(255,255,255,0)", "0px 0px 20px rgba(255,255,255,1)", "0px 0px 0px rgba(255,255,255,0)"]
+                  }}
+                  transition={{
+                    opacity: { delay: 1, duration: 0.2 },
+                    scale: { delay: 1, type: "spring", stiffness: 300, damping: 15 },
+                    textShadow: { delay: 1.5, duration: 1.5, repeat: Infinity, ease: "easeInOut" }
+                  }}
+                >
+                  <motion.span 
+                    animate={{ rotate: 360 }} 
+                    transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                    className="inline-block text-2xl"
+                  >
+                    ✨
+                  </motion.span>
+                  <span>Buy Now, Pay Back Monthly for 6 Months! 💳</span>
+                  <motion.span 
+                    animate={{ rotate: -360 }} 
+                    transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                    className="inline-block text-2xl"
+                  >
+                    ✨
+                  </motion.span>
+                </motion.div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="flex flex-col lg:flex-row gap-6">
         {/* Mobile Filter Toggle */}
@@ -235,7 +272,7 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
         </aside>
 
         {/* Product Grid */}
-        <div className="flex-grow">
+        <div className="flex-grow" id="product-grid">
           {error && (
             <div className="bg-red-50 text-red-600 p-4 rounded-xl text-sm mb-6">
               Failed to load products: {error.message}
