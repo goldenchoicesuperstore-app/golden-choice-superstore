@@ -117,7 +117,7 @@ export default function CartPage() {
             <button 
               onClick={() => router.push("/checkout")}
               disabled={items.length === 0}
-              className="w-full bg-brand-500 text-white font-bold text-lg py-4 rounded-xl shadow-brand hover:shadow-lg hover:bg-brand-600 transition-all duration-300 disabled:opacity-50 disabled:shadow-none"
+              className="w-full bg-gradient-to-r from-brand-500 to-[#C9980A] text-white font-bold text-lg py-4 rounded-xl shadow-brand hover:shadow-lg hover:scale-[1.02] transition-all duration-300 disabled:opacity-50 disabled:shadow-none border-none"
             >
               Proceed to Checkout
             </button>
