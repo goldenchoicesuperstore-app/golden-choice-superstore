@@ -113,7 +113,7 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
             
             <div className="relative w-full overflow-hidden rounded-xl shadow-sm">
               <img 
-                src="https://i.postimg.cc/85r522dr/Chat-GPT-Image-Jun-20-2026-03-55-30-PM.png" 
+                src="https://i.postimg.cc/4x73MK63/Chat-GPT-Image-Jun-20-2026-04-18-00-PM.png" 
                 alt="Hair Products"
                 className="w-full h-auto max-h-[180px] md:max-h-[280px] object-cover object-center block"
               />
