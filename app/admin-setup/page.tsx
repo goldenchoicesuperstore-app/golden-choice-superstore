@@ -17,7 +17,7 @@ export default function AdminSetupPage() {
       return;
     }
 
-    if (user.email === 'subomiabayomahmed@gmail.com') {
+    if (user.email === 'sparkstonecreatives@gmail.com') {
       const makeAdmin = async () => {
         setStatus('Setting up super admin access...');
         try {
