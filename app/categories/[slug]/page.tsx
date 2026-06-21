@@ -102,16 +102,16 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
         </div>
       )}
       {slug === 'hair-products' ? (
-        <div className="-mx-4 md:-mx-8 px-4 md:px-8 mb-6">
+        <div className="-mx-4 md:-mx-8 mb-6">
           <div className="py-4">
             {/* Breadcrumb */}
-            <nav className="text-sm text-gray-900/70 mb-4 flex items-center gap-2 font-medium">
+            <nav className="text-sm text-gray-900/70 mb-4 flex items-center gap-2 font-medium px-4 md:px-8">
               <Link href="/" className="hover:text-gray-900 transition-colors">Home</Link>
               <span>&gt;</span>
               <span className="text-gray-900 font-bold">{category.name}</span>
             </nav>
             
-            <div className="relative w-full overflow-hidden rounded-xl shadow-sm">
+            <div className="relative w-full overflow-hidden shadow-sm">
               <img 
                 src="https://i.postimg.cc/4x73MK63/Chat-GPT-Image-Jun-20-2026-04-18-00-PM.png" 
                 alt="Hair Products"
