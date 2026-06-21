@@ -41,54 +41,9 @@ export default function BottomNav() {
         variants={containerVariants} 
         initial="hidden" 
         animate="show" 
-        className="flex overflow-x-auto hide-scrollbar px-2 gap-3 items-center w-full"
+        className="flex overflow-x-auto hide-scrollbar px-2 justify-between items-center w-full"
       >
-        {/* Home Link */}
-        <motion.div variants={itemVariants} className="shrink-0">
-          <Link 
-            href="/categories/hair-products"
-            className="relative flex flex-col items-center justify-center min-w-[72px] h-[68px] p-2 rounded-xl text-white group outline-none"
-          >
-            <motion.div
-              whileTap={{ scale: 1.15 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
-              className="flex flex-col items-center relative z-10 w-full h-full"
-            >
-              {pathname === '/categories/hair-products' ? (
-                <>
-                  <div className="relative mb-1 z-10 flex items-center justify-center w-12 h-12">
-                    <motion.div
-                      layoutId="activeHighlight"
-                      className="absolute inset-0 bg-white border-2 border-[#F5C200] rounded-full drop-shadow-sm"
-                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                      animate={activeLinkPulse}
-                      style={{ transition: "all 2s ease-in-out" }}
-                    />
-                    <span className="relative z-20 flex items-center justify-center w-full h-full overflow-hidden rounded-full p-[2px]">
-                      <img src="/nav-icons/home.png" alt="Home" className="w-full h-full object-cover rounded-full" />
-                    </span>
-                  </div>
-                  <motion.span 
-                    initial={{ opacity: 0, y: 5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="text-[10px] font-bold text-center leading-tight whitespace-nowrap text-white relative z-10"
-                  >
-                    Home
-                  </motion.span>
-                </>
-              ) : (
-                <>
-                  <div className="flex items-center justify-center w-12 h-12 rounded-full bg-white/20 group-hover:bg-white/30 mb-1 z-10 relative drop-shadow-sm transition-colors duration-300 overflow-hidden p-[2px]">
-                    <img src="/nav-icons/home.png" alt="Home" className="w-full h-full object-cover rounded-full" />
-                  </div>
-                  <span className="text-[10px] font-bold text-center leading-tight whitespace-nowrap opacity-90 relative z-10">
-                    Home
-                  </span>
-                </>
-              )}
-            </motion.div>
-          </Link>
-        </motion.div>
+
 
         {/* Category Links */}
         {CATEGORIES.map((cat) => {
