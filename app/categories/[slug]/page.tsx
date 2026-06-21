@@ -115,7 +115,7 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
               <img 
                 src="https://i.postimg.cc/4x73MK63/Chat-GPT-Image-Jun-20-2026-04-18-00-PM.png" 
                 alt="Hair Products"
-                className="w-full h-auto max-h-[180px] md:max-h-[280px] object-cover object-center block"
+                className="w-full h-full max-h-[180px] md:max-h-[280px] object-cover object-center block"
               />
               {/* Invisible clickable overlay for the 'Shop Now' button */}
               <div 
