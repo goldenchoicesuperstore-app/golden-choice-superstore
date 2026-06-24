@@ -1,42 +1,14 @@
 "use client";
 
 import { useState, useContext } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AuthContext } from "../../../lib/auth/AuthContext";
-
-const loginSchema = z.object({
-  email: z.string().email({ message: "Please enter a valid email address" }),
-  password: z.string().min(6, { message: "Password must be at least 6 characters" }),
-});
-
-type LoginFormValues = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
   const router = useRouter();
   const authContext = useContext(AuthContext);
   const [errorToast, setErrorToast] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
-  });
-
-  const onSubmit = async (data: LoginFormValues) => {
-    setIsLoading(true);
-    setErrorToast("");
-    try {
-      await authContext?.login(data.email, data.password);
-      router.push("/");
-    } catch (error: any) {
-      setErrorToast(error.message || "Failed to login");
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const handleGoogleSignIn = async () => {
     setErrorToast("");
@@ -72,70 +44,14 @@ export default function LoginPage() {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md z-10">
         <div className="bg-white py-10 px-6 shadow-xl shadow-brand-500/10 rounded-3xl sm:px-10 border border-brand-100">
-          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
-            <div>
-              <label className="block text-sm font-bold text-gray-700">Email address</label>
-              <div className="mt-1">
-                <input
-                  {...register("email")}
-                  type="email"
-                  className="appearance-none block w-full px-4 py-3 border border-gray-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent sm:text-sm bg-gray-50 focus:bg-white transition-all"
-                  placeholder="you@example.com"
-                />
-                {errors.email && <p className="mt-2 text-sm text-red-600 font-bold">{errors.email.message}</p>}
-              </div>
-            </div>
-
-            <div>
-              <div className="flex items-center justify-between">
-                <label className="block text-sm font-bold text-gray-700">Password</label>
-                <div className="text-sm">
-                  <a href="#" className="font-bold text-brand-600 hover:text-brand-500">
-                    Forgot password?
-                  </a>
-                </div>
-              </div>
-              <div className="mt-1">
-                <input
-                  {...register("password")}
-                  type="password"
-                  className="appearance-none block w-full px-4 py-3 border border-gray-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent sm:text-sm bg-gray-50 focus:bg-white transition-all"
-                  placeholder="••••••••"
-                />
-                {errors.password && <p className="mt-2 text-sm text-red-600 font-bold">{errors.password.message}</p>}
-              </div>
-            </div>
-
-            <div>
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="w-full flex justify-center py-4 px-4 border border-transparent rounded-xl shadow-brand text-lg font-extrabold text-white bg-brand-500 hover:bg-brand-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 transition-colors disabled:opacity-70 disabled:shadow-none"
-              >
-                {isLoading ? "Signing in..." : "Sign in"}
-              </button>
-            </div>
-          </form>
-
-          <div className="mt-8">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-200" />
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-4 bg-white text-gray-500 font-bold">Or continue with</span>
-              </div>
-            </div>
-
-            <div className="mt-8">
-              <button
-                onClick={handleGoogleSignIn}
-                className="w-full flex justify-center items-center gap-3 py-4 px-4 border-2 border-gray-200 rounded-xl shadow-sm bg-white text-base font-extrabold text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all"
-              >
-                <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-6 h-6" alt="Google logo" />
-                Sign in with Google
-              </button>
-            </div>
+          <div>
+            <button
+              onClick={handleGoogleSignIn}
+              className="w-full flex justify-center items-center gap-3 py-4 px-4 border-2 border-gray-200 rounded-xl shadow-sm bg-white text-base font-extrabold text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all"
+            >
+              <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-6 h-6" alt="Google logo" />
+              Sign in with Google
+            </button>
           </div>
           
           <div className="mt-10 text-center text-base font-medium">
