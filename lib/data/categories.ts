@@ -16,7 +16,11 @@ export const CATEGORIES: Category[] = [
   { id: "6", name: "Phones", slug: "phones", icon: "📱", description: "Smartphones and mobile accessories from top brands.", imageUrl: "" },
   { id: "7", name: "Laptops & Accessories", slug: "laptops-accessories", icon: "💻", description: "Computers, peripherals, and workstation gear.", imageUrl: "" },
   { id: "8", name: "Beddings", slug: "beddings", icon: "🛏️", description: "Comfortable bed sheets, pillows, and cozy duvets.", imageUrl: "" },
-  { id: "9", name: "Drinks", slug: "drinks", icon: "☕", description: "Refreshing beverages, juices, and hot drinks.", imageUrl: "" }
+  { id: "9", name: "Drinks", slug: "drinks", icon: "☕", description: "Refreshing beverages, juices, and hot drinks.", imageUrl: "" },
+  { id: "10", name: "Bags", slug: "bags", icon: "👜", description: "Stylish and functional bags for every occasion.", imageUrl: "" },
+  { id: "11", name: "Shoes", slug: "shoes", icon: "👞", description: "Comfortable and trendy footwear.", imageUrl: "" },
+  { id: "12", name: "Food and Beverages", slug: "food-and-beverages", icon: "🍔", description: "Delicious food and refreshing beverages.", imageUrl: "" },
+  { id: "13", name: "Wristwatches", slug: "wristwatches", icon: "⌚", description: "Elegant and durable wristwatches.", imageUrl: "" }
 ];
 
 export const getCategoryBySlug = (slug: string): Category | undefined => {

@@ -19,7 +19,11 @@ const categories = [
   { name: "Phones", slug: "phones" },
   { name: "Laptops & Accessories", slug: "laptops-accessories" },
   { name: "Beddings", slug: "beddings" },
-  { name: "Drinks", slug: "drinks" }
+  { name: "Drinks", slug: "drinks" },
+  { name: "Bags", slug: "bags" },
+  { name: "Shoes", slug: "shoes" },
+  { name: "Food and Beverages", slug: "food-and-beverages" },
+  { name: "Wristwatches", slug: "wristwatches" }
 ];
 
 const productSchema = z.object({
