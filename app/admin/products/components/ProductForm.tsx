@@ -31,7 +31,7 @@ const productSchema = z.object({
   name: z.string().min(1, "Product Name is required"),
   category: z.string().min(1, "Category is required"),
   brand: z.string().optional(),
-  description: z.string().min(20, "Description must be at least 20 characters"),
+  description: z.string().optional(),
   price: z.number().min(1, "Price must be at least 1"),
   compareAtPrice: z.number().nullable().optional(),
   imageUrl: z.string().url("Must be a valid URL").min(1, "Image URL is required"),
@@ -151,7 +151,7 @@ export default function ProductForm({ initialData, productId }: { initialData?: 
 
         {/* Description */}
         <div className="md:col-span-2">
-          <label className="block text-sm font-black text-gray-700 mb-3 uppercase tracking-widest">Description *</label>
+          <label className="block text-sm font-black text-gray-700 mb-3 uppercase tracking-widest">Description</label>
           <textarea 
             {...register("description")} 
             rows={5} 

@@ -12,6 +12,44 @@ interface ProductCardProps {
 export default function ProductCard({ product }: ProductCardProps) {
   const addItem = useCartStore((state) => state.addItem);
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const [isAiModalOpen, setIsAiModalOpen] = useState(false);
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiResponse, setAiResponse] = useState<string | null>(null);
+  const [aiError, setAiError] = useState(false);
+
+  const handleAskAi = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsAiModalOpen(true);
+    
+    if (aiResponse) return; // already fetched
+
+    setAiLoading(true);
+    setAiError(false);
+    
+    try {
+      const res = await fetch('/api/product-ai-info', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: product.name,
+          category: product.category,
+          brand: product.brand,
+          description: product.description,
+          imageUrl: product.imageUrl
+        })
+      });
+      
+      if (!res.ok) throw new Error("API failed");
+      
+      const data = await res.json();
+      setAiResponse(data.summary);
+    } catch (err) {
+      setAiError(true);
+    } finally {
+      setAiLoading(false);
+    }
+  };
 
   const discountPercentage = product.compareAtPrice && product.compareAtPrice > product.price
     ? Math.round(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100)
@@ -62,6 +100,13 @@ export default function ProductCard({ product }: ProductCardProps) {
       <div className="p-3 flex flex-col flex-grow">
         <h3 className="text-sm font-medium text-gray-800 line-clamp-2 mb-1">{product.name}</h3>
         
+        <button 
+          onClick={handleAskAi}
+          className="text-[11px] bg-gradient-to-r from-[#F5C200]/10 to-white text-[#C9980A] border border-[#F5C200]/30 hover:bg-[#F5C200]/10 rounded-md py-1 px-2 font-bold transition-colors flex items-center justify-center gap-1 mb-2 w-fit shadow-sm"
+        >
+          ✨ Ask AI about this product
+        </button>
+        
         <div className="mt-auto">
           <div className="flex items-center gap-2 mb-2 flex-wrap">
             <span className="text-lg font-bold text-gray-900">
@@ -85,6 +130,47 @@ export default function ProductCard({ product }: ProductCardProps) {
           </button>
         </div>
       </div>
+
+      {/* AI Modal */}
+      {isAiModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setIsAiModalOpen(false); }}>
+          <div 
+            className="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden border border-[#F5C200]/30 relative cursor-default"
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+          >
+            {/* Header */}
+            <div className="bg-gradient-to-r from-[#F5C200] to-[#C9980A] p-4 flex items-center justify-between">
+              <h4 className="text-white font-bold flex items-center gap-2">
+                <span>✨</span> AI Product Info
+              </h4>
+              <button 
+                onClick={(e) => { e.preventDefault(); e.stopPropagation(); setIsAiModalOpen(false); }}
+                className="text-white hover:bg-white/20 rounded-full w-8 h-8 flex items-center justify-center transition-colors"
+              >
+                ✕
+              </button>
+            </div>
+            
+            {/* Body */}
+            <div className="p-6">
+              {aiLoading ? (
+                <div className="flex flex-col items-center justify-center py-6 gap-3">
+                  <div className="w-8 h-8 border-4 border-[#F5C200] border-t-transparent rounded-full animate-spin"></div>
+                  <p className="text-sm font-bold text-gray-600">Analyzing product...</p>
+                </div>
+              ) : aiError ? (
+                <div className="text-center py-4">
+                  <p className="text-red-500 font-medium text-sm">Unable to load product info right now. Please try again.</p>
+                </div>
+              ) : (
+                <div className="text-sm text-gray-700 leading-relaxed font-medium">
+                  {aiResponse}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
